@@ -1,0 +1,27 @@
+STUDIO CHITARRA - web app installabile (PWA)
+
+Contenuto della cartella (caricare TUTTI i file, nella stessa cartella):
+  index.html             l'app
+  manifest.webmanifest   nome, icona e colori per l'installazione
+  sw.js                  funzionamento offline
+  icon-*.png, apple-touch-icon.png   icone
+
+PUBBLICAZIONE GRATUITA CON GITHUB PAGES (consigliata, link permanente)
+ 1. Crea un account su github.com (se non lo hai).
+ 2. "New repository" -> nome es. "studio-chitarra" -> Public -> Create.
+ 3. "uploading an existing file" -> trascina tutti i file della cartella -> Commit changes.
+ 4. Settings -> Pages -> Source: "Deploy from a branch" -> Branch: main, cartella / (root) -> Save.
+ 5. Dopo 1-2 minuti l'app è su: https://TUO-NOME-UTENTE.github.io/studio-chitarra/
+
+INSTALLAZIONE SUL TELEFONO
+ Android (Chrome): apri il link -> banner "Installa" nella home dell'app, oppure menu ⋮ -> "Installa app".
+ iPhone (Safari): apri il link -> pulsante Condividi -> "Aggiungi alla schermata Home".
+ Dopo la prima apertura funziona anche senza internet.
+
+AGGIORNAMENTI
+ Sostituisci i file su GitHub. Per forzare l'aggiornamento sui telefoni cambia la riga
+ const CACHE = "chitarra-v1"  in sw.js (es. "chitarra-v2"), poi riapri l'app due volte.
+
+NOTE
+ - iPhone: con l'interruttore "silenzioso" attivo il metronomo non si sente.
+ - Record e lezioni completate sono salvati sul telefono (si perdono se cancelli i dati del sito).

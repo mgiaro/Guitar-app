@@ -1,0 +1,1152 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#111318">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icon-192.png" sizes="192x192">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Chitarra">
+<title>Studio Chitarra</title>
+<style>
+:root{
+  color-scheme: dark;
+  --bg:#111318; --s1:#191b21; --s2:#1f2229; --s3:#262a32; --s4:#2e323b;
+  --on:#e4e2e9; --on2:#a9adb8; --on3:#7d828e; --outline:#353a44;
+  --pri:#ffb59d; --on-pri:#4e1503; --pri-c:#6e2a16; --on-pri-c:#ffdbd0;
+  --ok:#81c995; --warn:#fdd663;
+  --d-t:#f28b82; --d-3:#8ab4f8; --d-5:#81c995; --d-7:#c58af9; --d-o:#9aa0a6; --d-b5:#fdd663; --d-alt:#5f6570;
+  --c-R:#f28b82; --c-MD:#8ab4f8; --c-SL:#fdd663; --c-LE:#fdd663; --c-AC:#fcad70; --c-AP:#ff8bcb; --c-TA:#81c995; --c-TE:#c58af9; --c-OR:#78d9ec; --c-BR:#a8b0ba; --c-SC:#fcad70; --c-GE:#a8b0ba;
+  --wood:#2a2520; --fret:#5e5444; --nut:#d9cdb8; --string:#9c8f7c;
+  --r-s:10px; --r-m:16px; --r-l:28px;
+  --bar:56px;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;background:var(--bg);color:var(--on);font:15px/1.5 "Roboto","Segoe UI",system-ui,-apple-system,sans-serif;height:100%}
+body.app-lock{overflow:hidden}
+a{color:inherit;text-decoration:none}
+button,input,select{font:inherit;color:inherit}
+svg.i{width:20px;height:20px;fill:currentColor;flex:none}
+/* ---------- componenti M3 ---------- */
+.btn{position:relative;display:inline-flex;align-items:center;justify-content:center;gap:6px;height:40px;padding:0 16px;border-radius:999px;border:1px solid var(--outline);background:transparent;cursor:pointer;font-weight:500;font-size:14px;letter-spacing:.01em;white-space:nowrap;overflow:hidden;transition:background .15s,border-color .15s}
+.btn::after{content:"";position:absolute;inset:0;background:currentColor;opacity:0;transition:opacity .15s}
+.btn:hover::after{opacity:.08}.btn:active::after{opacity:.14}
+.btn.filled{background:var(--pri);color:var(--on-pri);border-color:transparent}
+.btn.tonal{background:var(--s4);border-color:transparent}
+.btn.text{border-color:transparent;padding:0 10px}
+.btn.icon{width:40px;padding:0}
+.btn.sm{height:32px;padding:0 12px;font-size:13px}
+.btn.icon.sm{width:32px;padding:0}
+.btn[disabled]{opacity:.38;pointer-events:none}
+.chip{display:inline-flex;align-items:center;gap:6px;height:32px;padding:0 12px;border-radius:8px;border:1px solid var(--outline);background:transparent;font-size:13px;font-weight:500;cursor:pointer;white-space:nowrap;color:var(--on2);transition:.15s}
+.chip:hover{background:var(--s3)}
+.chip.on{background:var(--pri-c);border-color:transparent;color:var(--on-pri-c)}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chips.scroll{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+.chips.scroll::-webkit-scrollbar{display:none}
+@media (orientation: landscape){.metro .chips.scroll{flex-wrap:wrap}}
+.tag{display:inline-flex;align-items:center;height:24px;padding:0 8px;border-radius:6px;font-size:12px;font-weight:700;letter-spacing:.03em;background:color-mix(in srgb,var(--c) 16%,transparent);color:var(--c)}
+.c-R{--c:var(--c-R)}.c-MD{--c:var(--c-MD)}.c-SL{--c:var(--c-SL)}.c-LE{--c:var(--c-LE)}.c-AC{--c:var(--c-AC)}.c-AP{--c:var(--c-AP)}.c-TA{--c:var(--c-TA)}.c-TE{--c:var(--c-TE)}.c-OR{--c:var(--c-OR)}.c-BR{--c:var(--c-BR)}.c-SC{--c:var(--c-SC)}.c-GE{--c:var(--c-GE)}
+.card{background:var(--s1);border-radius:var(--r-m);padding:20px}
+.muted{color:var(--on2)}.small{font-size:13px}
+h1{font-size:28px;line-height:1.2;font-weight:500;margin:0;letter-spacing:0}
+h2{font-size:20px;line-height:1.3;font-weight:500;margin:0}
+h3{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--on2);margin:18px 0 8px}
+select,input[type=number]{height:36px;border:1px solid var(--outline);background:var(--s2);border-radius:8px;padding:0 10px}
+input[type=number]{width:62px;padding:0 6px;text-align:center}
+input[type=range]{accent-color:var(--pri);width:100%}
+input[type=checkbox]{accent-color:var(--pri);width:18px;height:18px}
+.switch{display:inline-flex;align-items:center;gap:8px;cursor:pointer;font-size:14px}
+.switch input{appearance:none;width:40px;height:24px;border-radius:12px;background:var(--s4);border:2px solid var(--on3);position:relative;cursor:pointer;transition:.15s;margin:0}
+.switch input::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--on3);transition:.15s}
+.switch input:checked{background:var(--pri);border-color:var(--pri)}
+.switch input:checked::after{left:19px;background:var(--on-pri);width:16px;height:16px;top:2px}
+.toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:#e4e2e9;color:#1b1b1f;padding:12px 18px;border-radius:8px;font-weight:500;opacity:0;transition:.2s;z-index:99;pointer-events:none;box-shadow:0 4px 16px rgba(0,0,0,.4);max-width:90vw;text-align:center}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.progress{height:4px;background:var(--s4);border-radius:2px;overflow:hidden}
+.progress>i{display:block;height:100%;background:var(--pri);border-radius:2px;transition:width .3s}
+
+/* ---------- pagine scorrevoli (home, panoramica) ---------- */
+.topbar{position:sticky;top:0;z-index:10;height:64px;display:flex;align-items:center;gap:12px;padding:0 max(16px,env(safe-area-inset-left));background:var(--bg)}
+.brand{display:flex;align-items:center;gap:10px;font-size:20px;font-weight:500}
+.brand b{width:32px;height:32px;border-radius:10px;background:var(--pri-c);color:var(--on-pri-c);display:grid;place-items:center}
+.page{max-width:1240px;margin:0 auto;padding:8px 16px 48px}
+.hero{display:grid;grid-template-columns:minmax(0,1.2fr) minmax(0,1fr);gap:16px}
+@media(max-width:820px){.hero{grid-template-columns:1fr}}
+.durbox{display:flex;align-items:center;gap:12px;margin:18px 0 12px}
+.durbox .v{font-size:57px;line-height:1;font-weight:400;min-width:96px;text-align:center;font-variant-numeric:tabular-nums}
+.week{margin-top:28px}
+.week-h{display:flex;align-items:baseline;gap:12px;flex-wrap:wrap;margin-bottom:12px}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.lcard{position:relative;display:block;background:var(--s1);border-radius:var(--r-m);padding:14px 14px 16px;transition:background .15s;border:1px solid transparent}
+.lcard:hover{background:var(--s3)}
+.lcard.last{border-color:var(--pri)}
+.lcard .n{font-size:12px;font-weight:600;color:var(--pri);letter-spacing:.04em}
+.lcard .d{font-size:16px;font-weight:500;margin:2px 0}
+.lcard .f{font-size:13px;color:var(--on2);line-height:1.35}
+.lcard .ok{position:absolute;top:12px;right:12px;color:var(--ok)}
+table.t{width:100%;border-collapse:collapse;font-size:14px}
+table.t th,table.t td{padding:10px 8px;border-bottom:1px solid var(--outline);text-align:left;vertical-align:top}
+table.t th{font-size:12px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;color:var(--on2)}
+table.t td.num{text-align:right;white-space:nowrap;font-variant-numeric:tabular-nums}
+table.t tr:last-child td{border-bottom:0}
+
+/* ---------- shell esercizio (schermo intero) ---------- */
+.shell{height:100dvh;display:grid;gap:8px;padding:8px max(8px,env(safe-area-inset-left)) max(8px,env(safe-area-inset-bottom));
+  grid-template-columns:minmax(0,1fr) clamp(300px,30vw,380px);
+  grid-template-rows:auto minmax(0,1fr) auto;
+  grid-template-areas:"bar bar" "content metro" "fb metro"}
+.sbar{grid-area:bar;display:flex;align-items:center;gap:8px;min-width:0;background:var(--s1);border-radius:var(--r-m);padding:6px 8px;position:relative}
+.sbar .ttl{min-width:0;flex:1;display:flex;flex-direction:column;line-height:1.2}
+.sbar .ttl .l1{font-size:12px;color:var(--on2);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sbar .ttl .l2{font-size:16px;font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.sbar .progress{position:absolute;left:12px;right:12px;bottom:0;height:3px;border-radius:2px}
+.timerchip{display:flex;align-items:center;gap:4px;background:var(--s3);border-radius:999px;padding:3px 4px 3px 12px}
+.timerchip .clock{font-size:20px;font-weight:500;font-variant-numeric:tabular-nums;min-width:58px;text-align:center}
+.timerchip.over{background:var(--pri-c);color:var(--on-pri-c)}
+.timerchip .tb{width:46px;height:4px;background:var(--s4);border-radius:2px;overflow:hidden}
+.timerchip .tb i{display:block;height:100%;background:var(--ok);transition:width 1s linear}
+.content{grid-area:content;background:var(--s1);border-radius:var(--r-m);overflow:auto;padding:20px 24px;min-height:0;scrollbar-width:thin}
+.content .head{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+.content .scopo{font-size:17px;color:var(--on);margin:8px 0 4px;max-width:80ch}
+.content .ctx{display:flex;gap:8px;flex-wrap:wrap;align-items:center;background:var(--s2);border-radius:var(--r-s);padding:8px 12px;font-size:13.5px;color:var(--on2);margin:12px 0 4px}
+.cols{display:grid;grid-template-columns:repeat(auto-fit,minmax(min(100%,330px),1fr));gap:4px 32px}
+.content ul,.content ol{margin:0;padding-left:20px}
+.content li{margin:5px 0;line-height:1.5}
+.content li::marker{color:var(--on3)}
+.tabbox{background:var(--s2);border-radius:var(--r-s);padding:10px 12px;margin-top:8px;overflow-x:auto}
+.tabbox .cap{font-size:12px;font-weight:600;color:var(--on2);margin-bottom:4px}
+.legendline{font-size:12px;color:var(--on3);margin-top:8px}
+.songcard{display:flex;gap:14px;align-items:center;background:var(--s2);border-radius:var(--r-s);padding:12px 14px;margin:8px 0}
+.songcard .ic{width:44px;height:44px;border-radius:12px;background:color-mix(in srgb,var(--c-BR) 20%,transparent);display:grid;place-items:center;color:var(--c-BR)}
+.notebadge{display:inline-flex;align-items:center;gap:8px;background:var(--pri-c);color:var(--on-pri-c);border-radius:10px;padding:6px 12px;font-size:15px;margin-top:8px}
+.notebadge b{font-size:20px}
+
+/* metronomo compatto */
+.metro{grid-area:metro;background:var(--s1);border-radius:var(--r-m);padding:12px 14px;display:flex;flex-direction:column;gap:8px;min-height:0;overflow:auto;scrollbar-width:thin;container-type:inline-size}
+.m-head{display:flex;align-items:center;justify-content:space-between;gap:8px}
+.m-head .lbl{font-size:12px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:var(--on2)}
+.rec{font-size:12px;color:var(--on2)}.rec b{color:var(--pri)}
+.m-ctl{display:flex;flex-direction:column;gap:8px}
+.m-ctl .fab{flex:none;width:100%}
+.bpmrow{display:flex;align-items:center;justify-content:center;gap:6px}
+.bpmrow .btn.icon.sm{width:40px;height:40px}
+.bpmbox{text-align:center;line-height:1}
+.bpmval{font-size:52px;font-weight:300;font-variant-numeric:tabular-nums;letter-spacing:-.02em;transition:color .3s}
+.bpmlbl{font-size:11px;color:var(--on3);letter-spacing:.1em}
+.stack{display:flex;flex-direction:column;gap:4px}
+.beatsrow{display:flex;align-items:center;justify-content:center;gap:10px}
+.beats{display:flex;gap:6px}
+.beat{width:22px;height:22px;border-radius:50%;background:var(--s4);transition:background .05s,transform .05s}
+.beat.acc{box-shadow:inset 0 0 0 2px var(--pri)}
+.beat.lit{background:var(--pri);transform:scale(1.15)}
+.beat.lit.mute{background:var(--on3)}
+.subs{display:flex;gap:3px}
+.subs i{width:6px;height:6px;border-radius:50%;background:var(--s4)}
+.subs i.lit{background:var(--on)}
+.m-play{display:flex;align-items:center;gap:8px}
+.fab{height:56px;flex:1;border-radius:16px;border:0;background:var(--pri);color:var(--on-pri);font-size:16px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:8px;cursor:pointer;position:relative;overflow:hidden}
+.fab.run{background:var(--pri-c);color:var(--on-pri-c)}
+.fab svg{width:28px;height:28px}
+.status{font-size:12.5px;color:var(--on2);text-align:center;min-height:18px}
+.status b{color:var(--pri);font-weight:600}
+.tabs{display:flex;border-bottom:1px solid var(--outline);overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tabs button{flex:1;border:0;background:none;padding:8px 6px;font-size:12.5px;font-weight:500;color:var(--on2);cursor:pointer;border-bottom:2px solid transparent;white-space:nowrap;position:relative}
+.tabs button.on{color:var(--pri);border-bottom-color:var(--pri)}
+.tabs button .dot{position:absolute;top:6px;right:4px;width:6px;height:6px;border-radius:50%;background:var(--pri)}
+.tabpanel[hidden]{display:none!important}
+.tabpanel{min-height:84px;padding:8px 2px 2px;font-size:13.5px;display:flex;flex-direction:column;gap:8px}
+.optrow{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+.dots3{display:flex;gap:5px}.dots3 i{width:14px;height:14px;border-radius:50%;background:var(--s4)}.dots3 i.on{background:var(--ok)}
+.m-more{display:none}
+/* layout metronomo largo (portrait tablet) */
+@container (min-width: 520px){
+  .m-ctl{flex-direction:row;align-items:center}
+  .m-ctl .bpmrow{flex:1}
+  .m-ctl .fab{flex:0 0 min(42%,260px);width:auto}
+}
+@container (min-width: 760px){
+  .m-wide{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:8px 24px;align-items:start}
+}
+
+/* tastiera (drawer) */
+.fb{grid-area:fb;background:var(--s1);border-radius:var(--r-m);padding:6px 12px 8px;min-width:0}
+.fb-head{display:flex;align-items:center;gap:8px;flex-wrap:wrap;min-height:44px}
+.fb-head .t{font-weight:500;font-size:15px;display:flex;align-items:center;gap:8px;white-space:nowrap;min-width:0;overflow:hidden;cursor:pointer}
+.fb-head .t span{overflow:hidden;text-overflow:ellipsis}
+.fb-head .t span{color:var(--pri)}
+.fb-ctrl{display:none;gap:6px;flex-wrap:wrap;align-items:center;flex:1;justify-content:flex-end}
+.fb-ctrl select{height:32px;font-size:13px}
+.notechips{display:flex;gap:4px;flex-wrap:wrap}
+.nchip{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;min-width:38px;height:34px;border-radius:8px;font-size:12.5px;font-weight:600;line-height:1.05;color:#16171c;background:var(--col)}
+.nchip small{font-size:10px;font-weight:600;opacity:.75}
+.fb-body{height:clamp(150px,30vh,320px);margin-top:4px;overflow-x:auto;overflow-y:hidden}
+.fb-body svg{display:block;height:100%;width:100%;min-width:600px}
+.fb.ctl-open .fb-ctrl{display:flex;flex-basis:100%;justify-content:flex-start}
+.fb.closed .fb-body,.fb.closed .x,.fb.closed .notechips{display:none}
+.fb-legend{display:flex;gap:12px;flex-wrap:wrap;font-size:11.5px;color:var(--on3);margin-top:2px}
+.fb-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;margin-right:5px;vertical-align:0}
+.fb.closed .fb-legend{display:none}
+
+/* elenco pagine (sheet) */
+.sheet-bg{position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:40;display:none}
+.sheet{position:fixed;left:50%;bottom:0;transform:translateX(-50%);width:min(560px,100vw);max-height:75vh;overflow:auto;background:var(--s2);border-radius:28px 28px 0 0;z-index:41;padding:12px 12px 24px;display:none}
+.sheet.show,.sheet-bg.show{display:block}
+.sheet .grab{width:32px;height:4px;border-radius:2px;background:var(--on3);margin:4px auto 12px}
+.sheet a{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:12px}
+.sheet a:hover{background:var(--s3)}
+.sheet a.cur{background:var(--pri-c);color:var(--on-pri-c)}
+.sheet a .tm{margin-left:auto;font-size:12.5px;opacity:.8;font-variant-numeric:tabular-nums}
+
+
+/* ---------- PORTRAIT ---------- */
+.m-toggle{display:none}
+@media (orientation: landscape){ .m-more{display:flex} }
+@media (orientation: portrait){
+  .shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto auto minmax(0,1fr) auto;grid-template-areas:"bar" "metro" "content" "fb"}
+  .metro{overflow:visible;padding:10px 12px;gap:6px}
+  .metro.collapsed .m-more{display:none!important}
+  .metro:not(.collapsed) .m-more{display:flex}
+  .metro.collapsed .status{display:none}
+  .m-toggle{display:inline-flex!important}
+  .bpmval{font-size:42px}
+  .fab{height:48px}
+  .fb-body{height:clamp(120px,22vh,300px)}
+  .content{padding:16px}
+}
+/* landscape basso (telefono in orizzontale) */
+@media (orientation: landscape) and (max-height: 520px){
+  .shell{gap:6px;padding:6px;grid-template-columns:minmax(0,1fr) clamp(260px,34vw,340px)}
+  .fb-body{height:38vh}
+  .notechips{display:none}
+  .bpmval{font-size:40px}
+  .fab{height:46px}
+  .content{padding:14px 16px}
+}
+/* telefono stretto: solo pulsanti essenziali nella barra */
+@media (max-width: 520px){
+  .notechips{display:none}
+  .fb-head .t{flex:1}
+  .fb-body{height:20vh}
+  .hide-xs{display:none!important}
+  .timerchip .tb{display:none}
+  .timerchip .clock{font-size:17px;min-width:48px}
+}
+
+/* ================= SMARTPHONE (verticale) ================= */
+button,a,.chip,.btn{touch-action:manipulation}
+body{overscroll-behavior:none;-webkit-user-select:none;user-select:none}
+.content,.content *{-webkit-user-select:text;user-select:text}
+.mini,.bnav{display:none}
+.m .shell{grid-template-columns:minmax(0,1fr);grid-template-rows:auto minmax(0,1fr) auto auto;
+  grid-template-areas:"bar" "main" "mini" "nav";gap:6px;
+  padding:max(6px,env(safe-area-inset-top)) 6px 0 6px}
+.m .content,.m .metro,.m .fb{grid-area:main;display:none}
+.m .shell[data-tab=ex] .content{display:block;padding:14px 14px 20px}
+.m .shell[data-tab=metro] .metro{display:flex;overflow:auto;padding:12px 14px}
+.m .shell[data-tab=fb] .fb{display:flex;flex-direction:column;overflow:hidden;padding:6px 8px}
+.m .metro .m-more{display:flex!important}
+.m .metro .status{display:block!important}
+.m .m-toggle{display:none!important}
+.m .metro .bpmval{font-size:64px}
+.m .metro .fab{height:60px}
+.m .metro .bpmrow .btn.icon.sm{width:46px;height:46px;font-size:15px}
+.m .metro .chips.scroll{flex-wrap:wrap}
+.m .shell[data-tab=metro] .mini{display:none!important}
+.m .content h1{font-size:21px!important}
+.m .content .scopo{font-size:15.5px}
+.m .content .cols{grid-template-columns:1fr}
+.m .fb .fb-body{height:auto;flex:1;overflow:auto;margin-top:2px}
+.m .fb .fb-body svg{min-width:0!important;width:100%;height:auto}
+.m .fb.closed .fb-body,.m .fb.closed .x,.m .fb.closed .notechips,.m .fb.closed .fb-legend{display:revert}
+.m .fb.closed .fb-body{display:block}
+.m #fbTog{display:none}
+.m .fb-head{min-height:40px}
+.m .fb-head .t{flex:1;font-size:14px}
+.m .fb .notechips{display:flex;order:5;flex-basis:100%}
+.m .fb-legend{font-size:11px}
+.m .sbar .ttl .l2{font-size:15px}
+.m .timerchip>svg.i{display:none}
+.m .timerchip{padding:3px 2px 3px 10px}
+.m .sbar{gap:4px;padding:6px 6px}
+.m .fb .fb-body.fit{overflow:hidden;display:flex;justify-content:center}
+.m .fb .fb-body.fit svg{height:100%!important;width:auto!important;max-width:100%}
+.notebadge{flex-wrap:wrap;row-gap:2px}
+.brand{white-space:nowrap}
+/* mini metronomo */
+.m .mini{display:flex;grid-area:mini;align-items:center;gap:6px;background:var(--s2);border-radius:var(--r-m);padding:6px 6px 6px 12px}
+.mini .mb{display:flex;gap:4px;margin-right:2px}
+.mini .mb i{width:9px;height:9px;border-radius:50%;background:var(--s4)}
+.mini .mb i.a{box-shadow:inset 0 0 0 1.5px var(--pri)}
+.mini .mb i.lit{background:var(--pri)}
+.mini .mbpm{flex:1;text-align:center;line-height:1}
+.mini .mbpm b{font-size:26px;font-weight:400;font-variant-numeric:tabular-nums}
+.mini .mbpm small{display:block;font-size:9.5px;color:var(--on3);letter-spacing:.1em}
+.mini .btn.icon.sm{width:36px;height:36px}
+.mini .mplay{width:52px;height:44px;border-radius:14px;border:0;background:var(--pri);color:var(--on-pri);display:grid;place-items:center;cursor:pointer}
+.mini .mplay.run{background:var(--pri-c);color:var(--on-pri-c)}
+.mini .mplay svg{width:26px;height:26px}
+/* barra di navigazione M3 */
+.m .bnav{display:flex;grid-area:nav;justify-content:space-around;background:var(--s1);margin:0 -6px;padding:6px 6px calc(6px + env(safe-area-inset-bottom))}
+.bnav button{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;border:0;background:none;color:var(--on2);font-size:12px;font-weight:500;cursor:pointer;padding:2px 0}
+.bnav button .pill{width:60px;height:30px;border-radius:15px;display:grid;place-items:center;transition:background .2s}
+.bnav button.on{color:var(--on)}
+.bnav button.on .pill{background:var(--pri-c);color:var(--on-pri-c)}
+/* home e panoramica su telefono */
+@media (max-width:600px){
+  .page{padding:4px 12px 40px}
+  .card{padding:16px;border-radius:20px}
+  h1{font-size:23px}
+  .durbox .v{font-size:48px;min-width:80px}
+  .lgrid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+  .lcard{padding:12px}
+  .topbar{height:56px;padding-top:env(safe-area-inset-top);box-sizing:content-box}
+  .brand{font-size:18px}
+  table.t{font-size:13px}
+  table.t th,table.t td{padding:8px 4px}
+}
+.installbar{display:flex;align-items:center;gap:10px;background:var(--pri-c);color:var(--on-pri-c);border-radius:16px;padding:12px 14px;margin-bottom:12px;font-size:14px}
+.installbar b{font-weight:600}
+.installbar .btn{border-color:transparent;background:var(--pri);color:var(--on-pri);height:36px;margin-left:auto}
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div class="sheet-bg" id="sheetBg"></div><div class="sheet" id="sheet"></div>
+<div class="toast" id="toast"></div>
+<script>
+const DATA = {"exercises": {"R1": {"id": "R1", "titolo": "Cromatico 1-2-3-4", "scopo": "Riscaldare le mani, sincronizzarle e fissare l'abitudine 'un dito per tasto' con la pennata alternata.", "come": ["Mano sinistra: indice al 1° tasto, medio al 2°, anulare al 3°, mignolo al 4°.", "Pennata alternata rigorosa: giù–su–giù–su, anche nei cambi di corda.", "Sali dalla 6ª corda alla 1ª, poi scendi (4-3-2-1). Ripeti spostandoti di un tasto fino al 5° tasto.", "Ottavi (due note per click). Le dita restano vicine alle corde."], "errori": ["Pennare due volte giù nel cambio corda.", "Alzare troppo le dita della sinistra o irrigidire il pollice dietro il manico."], "bpm": "60 → 110 (ottavi)", "tabs": [{"steps": [{"6": "1"}, {"6": "2"}, {"6": "3"}, {"6": "4"}, "|", {"5": "1"}, {"5": "2"}, {"5": "3"}, {"5": "4"}, "|", {"4": "1"}, {"4": "2"}, {"4": "3"}, {"4": "4"}, "|", {"3": "1"}, {"3": "2"}, {"3": "3"}, {"3": "4"}, "|", {"2": "1"}, {"2": "2"}, {"2": "3"}, {"2": "4"}, "|", {"1": "1"}, {"1": "2"}, {"1": "3"}, {"1": "4"}], "labels": ["↓", "↑", "↓", "↑", "", "↓", "↑", "↓", "↑", "", "↓", "↑", "↓", "↑", "", "↓", "↑", "↓", "↑", "", "↓", "↑", "↓", "↑", "", "↓", "↑", "↓", "↑"], "caption": "Salita (poi scendi al contrario) · ↓ = pennata in giù, ↑ = in su", "tuning": "std"}]}, "R2": {"id": "R2", "titolo": "Click su 2 e 4", "scopo": "Sviluppare il 'tempo interno' e il feel rock/pop: il click diventa il rullante.", "come": ["Imposta il metronomo a metà velocità (es. 40 bpm = 80 bpm effettivi).", "Conta '1 – 2 – 3 – 4': il click deve cadere su 2 e su 4.", "Suona ottavi in palm mute sulla 6ª corda a vuoto per 2 minuti, poi una sequenza di accordi (Mi5 – Sol5 – La5).", "Quando è comodo, prova il click solo sull'1 (un click per battuta)."], "errori": ["Accelerare senza accorgersene tra un click e l'altro: registrati e verifica.", "Partire con il click sull'1 e 3 senza accorgersene."], "bpm": "click 40 → 60 (= 80 → 120 effettivi)", "tabs": []}, "R3": {"id": "R3", "titolo": "Suddivisioni", "scopo": "Controllare il tempo dentro la battuta: passare da una suddivisione all'altra senza perdere il battito.", "come": ["Una sola nota (6ª corda a vuoto, palm mute). Metronomo sui quarti.", "4 battute di semiminime → 4 di ottavi → 4 di terzine → 4 di sedicesimi → torna indietro.", "Pennata alternata sempre. Conta ad alta voce: '1 – 1-e – 1-tri-pl – 1-e-&-a'.", "Nessuna pausa tra un cambio e l'altro."], "errori": ["Le terzine diventano 'ottavi + sedicesimi': devono essere tre note uguali.", "Con le terzine la pennata si inverte a ogni movimento (giù-su-giù, su-giù-su): è normale."], "bpm": "60 → 90", "tabs": []}, "R4": {"id": "R4", "titolo": "Gap click", "scopo": "Verificare la stabilità del tempo quando nessuno ti tiene a tempo.", "come": ["Imposta il metronomo in modo che suoni 2 battute e taccia per 2.", "Suona ottavi o un giro di accordi. Quando il click rientra, devi essere esattamente sul battito.", "Quando riesci, passa a 2 battute sì / 4 no."], "errori": ["Rallentare nel silenzio (succede quasi sempre: è normale all'inizio)."], "bpm": "70 → 100", "tabs": []}, "R5": {"id": "R5", "titolo": "Shuffle (feel terzinato)", "scopo": "Il groove del blues: ottavi 'swingati' basati sulla terzina.", "come": ["Suona terzine in palm mute sulla 5ª corda a vuoto: 1-2-3, 1-2-3.", "Togli la nota centrale di ogni terzina: lunga–corta, lunga–corta. Questo è lo shuffle.", "Applicalo alla ritmica boogie del blues (TE4)."], "errori": ["Shuffle troppo 'quadrato' (ottavi dritti) o troppo saltellato."], "bpm": "60 → 100", "tabs": []}, "MD1": {"id": "MD1", "titolo": "Pennata alternata e cambio corda", "scopo": "Rendere uniforme e precisa la mano destra, il tuo punto debole principale.", "come": ["Pentatonica minore di La (box 1) con due note per corda, pennata alternata rigorosa.", "Il movimento parte dal polso, non dal gomito. Plettro tenuto tra pollice e lato dell'indice, sporge poco.", "Cambio corda: allena sia la pennata 'esterna' (le corde restano fuori dal movimento) sia quella 'interna'.", "Ripeti la scala salendo e scendendo senza fermarti per 1 minuto."], "errori": ["Volume diverso tra pennate in giù e in su: ascolta o registrati.", "Movimenti troppo ampi: il plettro deve uscire di pochi millimetri dalla corda."], "bpm": "70 → 130 (ottavi)", "tabs": [{"steps": [{"6": "5"}, {"6": "8"}, {"5": "5"}, {"5": "7"}, {"4": "5"}, {"4": "7"}, {"3": "5"}, {"3": "7"}, {"2": "5"}, {"2": "8"}, {"1": "5"}, {"1": "8"}], "labels": ["↓", "↑", "↓", "↑", "↓", "↑", "↓", "↑", "↓", "↑", "↓", "↑"], "caption": "Pentatonica di La, box 1 (salita; poi scendi)", "tuning": "std"}, {"steps": [{"2": "5"}, {"1": "5"}, {"2": "5"}, {"1": "5"}, {"2": "5"}, {"1": "5"}, {"2": "5"}, {"1": "5"}, "|", {"1": "5"}, {"2": "8"}, {"1": "5"}, {"2": "8"}, {"1": "5"}, {"2": "8"}, {"1": "5"}, {"2": "8"}], "labels": ["↓", "↑", "↓", "↑", "↓", "↑", "↓", "↑", "", "↓", "↑", "↓", "↑", "↓", "↑", "↓", "↑"], "caption": "Cambio corda: pennata esterna · pennata interna", "tuning": "std"}]}, "MD2": {"id": "MD2", "titolo": "String skipping (salto di corda)", "scopo": "Precisione nei salti tra corde non adiacenti: ottave, riff e arpeggi.", "come": ["Alterna 6ª corda 5° tasto e 4ª corda 7° tasto (La e la sua ottava) in ottavi.", "Poi 5ª corda 5° tasto e 3ª corda 7° tasto (Re e ottava).", "La corda saltata deve restare muta: la smorza il dito della sinistra che preme la nota grave."], "errori": ["Toccare la corda in mezzo con il plettro: rallenta e guarda la mano destra."], "bpm": "60 → 110", "tabs": [{"steps": [{"6": "5"}, {"4": "7"}, {"6": "5"}, {"4": "7"}, {"6": "5"}, {"4": "7"}, {"6": "5"}, {"4": "7"}, "|", {"5": "5"}, {"3": "7"}, {"5": "5"}, {"3": "7"}, {"5": "5"}, {"3": "7"}, {"5": "5"}, {"3": "7"}], "labels": ["↓", "↑", "↓", "↑", "↓", "↑", "↓", "↑", "", "↓", "↑", "↓", "↑", "↓", "↑", "↓", "↑"], "caption": "Ottave con salto di corda", "tuning": "std"}]}, "MD3": {"id": "MD3", "titolo": "Accenti spostati", "scopo": "Controllo della dinamica: decidere quale nota esce più forte.", "come": ["Sedicesimi su una sola nota (6ª corda a vuoto, palm mute leggero), metronomo sui quarti.", "Battuta 1: accento sulla 1ª nota di ogni gruppo di 4. Battuta 2: sulla 2ª. Battuta 3: sulla 3ª. Battuta 4: sulla 4ª.", "L'accento si ottiene pennando più forte e alleggerendo il palm mute, non suonando più lungo."], "errori": ["Accelerare sull'accento.", "Accentare solo le pennate in giù: deve funzionare anche con quelle in su."], "bpm": "60 → 90 (sedicesimi)", "tabs": [{"steps": [{"6": ">"}, {"6": "0"}, {"6": "0"}, {"6": "0"}, {"6": "0"}, {"6": ">"}, {"6": "0"}, {"6": "0"}, "|", {"6": "0"}, {"6": "0"}, {"6": ">"}, {"6": "0"}, {"6": "0"}, {"6": "0"}, {"6": "0"}, {"6": ">"}], "labels": ["↓", "↑", "↓", "↑", "↓", "↑", "↓", "↑", "", "↓", "↑", "↓", "↑", "↓", "↑", "↓", "↑"], "caption": "> = nota accentata (1ª, 2ª, 3ª, 4ª posizione)", "tuning": "std"}]}, "MD4": {"id": "MD4", "titolo": "Palm muting e power chord", "scopo": "Il suono del rock: note stoppate e controllate, power chord pieni.", "come": ["Appoggia il lato del palmo destro sulle corde, proprio sopra il ponte: suono 'chiuso' ma ancora intonato.", "Ottavi in palm mute sulla 6ª corda, poi alza il palmo per far suonare pieni i power chord.", "Pennata solo in giù per i riff rock più pesanti, alternata per quelli più veloci."], "errori": ["Palmo troppo avanti verso il manico: le note diventano un 'tuc' senza intonazione."], "bpm": "80 → 140 (ottavi)", "tabs": [{"steps": [{"6": "0"}, {"6": "0"}, {"6": "0"}, {"6": "0"}, {"6": "0"}, {"6": "0"}, {"6": "3", "5": "5"}, {"6": "5", "5": "7"}, "|", {"6": "0"}, {"6": "0"}, {"6": "0"}, {"6": "0"}, {"6": "5", "5": "7"}, {"6": "3", "5": "5"}, {"6": "0", "5": "2"}, {"6": "0", "5": "2"}], "labels": ["PM", "PM", "PM", "PM", "PM", "PM", "", "", "", "PM", "PM", "PM", "PM"], "caption": "PM = palm mute · Mi5 – Sol5 – La5", "tuning": "std"}]}, "MD5": {"id": "MD5", "titolo": "Strumming a sedicesimi", "scopo": "Ritmica pop/rock: mano che si muove sempre a tempo, colpi a vuoto per creare il groove.", "come": ["La mano destra va su e giù continuamente come un pendolo: giù sui battiti, su sui contrattempi.", "Quando non devi suonare, la mano passa sopra le corde senza toccarle ('colpo a vuoto').", "Le x sono colpi stoppati: la sinistra allenta la pressione sulle corde e il colpo diventa percussivo.", "Pattern pop classico: ↓ ↓↑ ↑↓↑ su un accordo di Mi minore, poi su un giro Sol – Re – Mim – Do."], "errori": ["Fermare la mano nelle pause: perdi subito il tempo.", "Stringere troppo il plettro: le corde devono 'scorrere'."], "bpm": "70 → 110", "tabs": [{"steps": [{"1": "0", "2": "0", "3": "0", "4": "2", "5": "2", "6": "0"}, {"1": "x", "2": "x", "3": "x", "4": "x", "5": "x", "6": "x"}, {"1": "0", "2": "0", "3": "0", "4": "2", "5": "2", "6": "0"}, {"1": "0", "2": "0", "3": "0", "4": "2", "5": "2", "6": "0"}, {"1": "x", "2": "x", "3": "x", "4": "x", "5": "x", "6": "x"}, {"1": "0", "2": "0", "3": "0", "4": "2", "5": "2", "6": "0"}, {"1": "0", "2": "0", "3": "0", "4": "2", "5": "2", "6": "0"}, {"1": "0", "2": "0", "3": "0", "4": "2", "5": "2", "6": "0"}], "labels": ["↓", "↑", "↓", "↑", "↓", "↑", "↓", "↑"], "caption": "Mi minore: x = colpo stoppato (ottavi, mano sempre in movimento)", "tuning": "std"}]}, "MD6": {"id": "MD6", "titolo": "Resistenza (ottavi continui)", "scopo": "Mantenere ottavi costanti per un brano intero: indispensabile nel rock.", "come": ["Ottavi continui in palm mute (6ª corda: 0 – 0 – 3 – 5) per 2 minuti senza fermarti.", "Mano rilassata: se senti tensione all'avambraccio, abbassa il tempo.", "Aumenta la durata: 2 → 3 → 4 minuti, poi alza il tempo."], "errori": ["Irrigidire la mano quando arriva la fatica: rilassa la spalla e respira."], "bpm": "90 → 150", "tabs": [{"steps": [{"6": "0"}, {"6": "0"}, {"6": "3"}, {"6": "3"}, {"6": "5"}, {"6": "5"}, {"6": "3"}, {"6": "3"}], "labels": ["↓", "↑", "↓", "↑", "↓", "↑", "↓", "↑"], "caption": "Ottavi continui in palm mute", "tuning": "std"}]}, "LE1": {"id": "LE1", "titolo": "Hammer-on e pull-off", "scopo": "Fluidità e forza della mano sinistra: note legate senza pennare.", "come": ["Hammer-on (h): penna la nota, poi 'martella' un dito più avanti sulla stessa corda.", "Pull-off (p): con due dita appoggiate, tira via quello più avanti verso il basso facendo vibrare la corda.", "Volume delle note legate uguale a quello della nota pennata.", "Applica alla pentatonica di La: una pennata per corda, il resto legato."], "errori": ["Pull-off 'sollevando' il dito invece di tirare la corda: la nota muore."], "bpm": "60 → 110 (terzine)", "tabs": [{"steps": [{"3": "5"}, {"3": "h7"}, {"3": "p5"}, {"4": "7"}, "|", {"2": "5"}, {"2": "h8"}, {"2": "p5"}, {"3": "7"}, "|", {"1": "5"}, {"1": "h8"}, {"1": "p5"}, {"2": "8"}], "labels": ["↓", "", "", "↓", "", "↓", "", "", "↓", "", "↓", "", "", "↓"], "caption": "h = hammer-on · p = pull-off", "tuning": "std"}]}, "LE2": {"id": "LE2", "titolo": "Bending intonato", "scopo": "Il suono vocale del blues e del rock: piegare la corda fino alla nota giusta.", "come": ["Prima suona la nota di arrivo (3ª corda 9° tasto) per sentirla, poi piega dal 7° tasto fino a raggiungerla (bending di un tono).", "Spingi con 3 dita insieme (anulare + medio + indice), ruotando il polso come per girare una chiave.", "Rilascio (r): riporta la corda giù controllando l'intonazione.", "Poi bending di mezzo tono: 2ª corda 8° → suono del 9°."], "errori": ["Bending calante (non arrivi alla nota): confronta sempre con la nota di riferimento.", "Altre corde che suonano: smorzale con il palmo destro e con l'indice sinistro."], "bpm": "60 → 80 (lento, ascolta!)", "tabs": [{"steps": [{"3": "9"}, {"3": "7b9"}, {"3": "r7"}, "|", {"2": "9"}, {"2": "8b9"}, {"2": "r8"}, "|", {"3": "7b9"}, {"2": "5"}, {"1": "5"}], "labels": ["rif.", "1T", "", "", "rif.", "½T", "", "", "1T", "", ""], "caption": "b = bending · r = rilascio · rif. = nota di riferimento", "tuning": "std"}]}, "LE3": {"id": "LE3", "titolo": "Vibrato", "scopo": "La firma personale del chitarrista: far 'cantare' le note lunghe.", "come": ["Vibrato a polso: stessi movimenti del bending, ma piccoli e regolari (su–giù–su–giù).", "Fallo a tempo: 2 oscillazioni per click a 60 bpm, poi ottavi, poi terzine.", "Prova su ogni dito (indice, medio, anulare) e dopo un bending (bending + vibrato)."], "errori": ["Vibrato nervoso e irregolare: meglio lento e largo che veloce e confuso."], "bpm": "60 → 80", "tabs": [{"steps": [{"2": "8~"}, {"1": "5~"}, {"3": "7~"}, "|", {"3": "7b9~"}], "labels": ["anul.", "ind.", "anul.", "", "bend+vib."], "caption": "~ = vibrato", "tuning": "std"}]}, "LE4": {"id": "LE4", "titolo": "Slide e double stop", "scopo": "Il linguaggio del rock'n'roll e del blues: note scivolate e bicordi alla Chuck Berry.", "come": ["Slide (/ in su, \\ in giù): penna la nota e scivola mantenendo la pressione fino alla nota di arrivo.", "Double stop: due note insieme sulle corde 2 e 1, con un solo dito (barrè piccolo).", "Pattern rock'n'roll in La: double stop al 5° tasto ripetuto in ottavi, poi al 8°.", "Smorza le corde gravi con il palmo destro."], "errori": ["Allentare la pressione durante lo slide: la nota si spegne a metà."], "bpm": "70 → 140", "tabs": [{"steps": [{"3": "5/7"}, {"3": "7"}, {"2": "5"}, {"1": "5"}, {"3": "7\\5"}], "labels": ["↓", "", "↓", "↓", "↓"], "caption": "Slide", "tuning": "std"}, {"steps": [{"2": "5", "1": "5"}, {"2": "5", "1": "5"}, {"2": "5", "1": "5"}, {"2": "5", "1": "5"}, {"2": "8", "1": "8"}, {"2": "8", "1": "8"}, {"2": "5", "1": "5"}, {"2": "5", "1": "5"}], "labels": ["↓", "↑", "↓", "↑", "↓", "↑", "↓", "↑"], "caption": "Double stop rock'n'roll in La", "tuning": "std"}]}, "AC1": {"id": "AC1", "titolo": "Cambi di accordo (accordi aperti)", "scopo": "Cambi rapidi e puliti: la base per suonare qualsiasi brano.", "come": ["Accordi: Mim, Do, Sol, Re, Lam. Cambia ogni 4 click, poi ogni 2, poi ogni click.", "Sfida del minuto: quanti cambi puliti fai in 60 secondi tra due accordi? Annota il numero.", "Muovi le dita insieme, come una forma unica. Cerca le 'dita guida' che restano ferme (es. Do → Lam).", "Controllo: arpeggia l'accordo corda per corda; ogni nota deve suonare pulita."], "errori": ["Guardare a lungo la mano: prova i cambi a occhi chiusi.", "Premere troppo forte: serve solo la forza minima per far suonare la nota."], "bpm": "60 → 100 (cambio ogni 2 click)", "tabs": [{"steps": [{"6": "0", "5": "2", "4": "2", "3": "0", "2": "0", "1": "0"}, "|", {"5": "3", "4": "2", "3": "0", "2": "1", "1": "0"}, "|", {"6": "3", "5": "2", "4": "0", "3": "0", "2": "0", "1": "3"}, "|", {"4": "0", "3": "2", "2": "3", "1": "2"}, "|", {"5": "0", "4": "2", "3": "2", "2": "1", "1": "0"}], "labels": ["Mim", "", "Do", "", "Sol", "", "Re", "", "Lam"], "caption": "Gli accordi aperti", "tuning": "std"}]}, "AC2": {"id": "AC2", "titolo": "Barrè: forme di Mi e di La", "scopo": "Suonare qualsiasi accordo maggiore e minore spostando 4 forme.", "come": ["Forma di Mi (tonica sulla 6ª corda): Fa al 1° tasto, Sol al 3°, La al 5°.", "Forma di La (tonica sulla 5ª corda): Si♭ al 1°, Do al 3°, Re al 5°. Stesse forme in versione minore.", "L'indice è un capotasto: usa il lato osseo, vicino al tasto metallico. Il pollice dietro al manico, a metà.", "Esercizio: Fa – Rem – Si♭ – Do (barrè), cambio ogni battuta."], "errori": ["Spremere con il pollice: la forza viene dal peso del braccio che tira indietro.", "Note che 'friggono' sotto l'indice: sposta leggermente l'indice verso il tasto."], "bpm": "60 → 90", "tabs": [{"steps": [{"6": "1", "5": "3", "4": "3", "3": "2", "2": "1", "1": "1"}, "|", {"6": "5", "5": "5", "4": "7", "3": "7", "2": "6", "1": "5"}, "|", {"5": "1", "4": "3", "3": "3", "2": "3", "1": "1"}, "|", {"5": "2", "4": "4", "3": "4", "2": "3", "1": "2"}], "labels": ["Fa", "", "Lam", "", "Si♭", "", "Sim"], "caption": "Forma di Mi (maggiore e minore) · forma di La (maggiore e minore)", "tuning": "std"}]}, "AC3": {"id": "AC3", "titolo": "Power chord e riff rock", "scopo": "Il motore del rock: due note (tonica e quinta) che si spostano ovunque.", "come": ["Power chord sulla 6ª corda (tonica + 5ª corda due tasti avanti) e sulla 5ª corda.", "Riff: Mi5 – Sol5 – La5 – Do5 – Re5, in ottavi con pennata solo in giù e palm mute leggero.", "Muovi la mano come un blocco unico, senza staccare le dita dalla forma.", "Smorza le altre corde con il polpastrello dell'indice."], "errori": ["Accordi 'sporchi' durante lo spostamento: alleggerisci la pressione mentre ti muovi."], "bpm": "80 → 140", "tabs": [{"steps": [{"6": "0", "5": "2"}, {"6": "0", "5": "2"}, {"6": "3", "5": "5"}, {"6": "3", "5": "5"}, "|", {"6": "5", "5": "7"}, {"6": "5", "5": "7"}, {"5": "3", "4": "5"}, {"5": "5", "4": "7"}], "labels": ["Mi5", "", "Sol5", "", "", "La5", "", "Do5", "Re5"], "caption": "Riff con power chord", "tuning": "std"}]}, "AC4": {"id": "AC4", "titolo": "Triadi sulle corde acute", "scopo": "Accordi piccoli e brillanti per la ritmica pop e funk, e per capire il manico (sistema CAGED).", "come": ["Do maggiore sulle corde 3-2-1 in tre rivolti: stato fondamentale (5°), primo rivolto (8°), secondo rivolto (12°).", "Stesso lavoro con La minore (2°, 5°, 9°).", "Suonale con pennata secca sui contrattempi (2 e 4) sopra un giro di accordi.", "Cerca la tonica in ogni forma e dilla ad alta voce."], "errori": ["Usare sempre e solo la forma più comoda: allena tutti e tre i rivolti."], "bpm": "70 → 100", "tabs": [{"steps": [{"3": "5", "2": "5", "1": "3"}, {"3": "9", "2": "8", "1": "8"}, {"3": "12", "2": "13", "1": "12"}, "|", {"3": "2", "2": "1", "1": "0"}, {"3": "5", "2": "5", "1": "5"}, {"3": "9", "2": "10", "1": "8"}], "labels": ["Do", "Do/Mi", "Do/Sol", "", "Lam", "Lam/Do", "Lam/Mi"], "caption": "Rivolti di Do maggiore e La minore", "tuning": "std"}]}, "AP1": {"id": "AP1", "titolo": "Sol aperto: accordi con un dito e riff alla Keith Richards", "scopo": "Scoprire il Sol aperto: accordi maggiori con un dito e il riff rock'n'roll più famoso della storia.", "come": ["Accorda: 6ª Mi→Re, 5ª La→Sol, 1ª Mi→Re (−1 tono ciascuna). Le corde a vuoto suonano un Sol maggiore.", "Barrè con un dito: 5° tasto = Do (IV), 7° tasto = Re (V), 12° = Sol. Suona il blues a 12 battute così.", "Riff: barrè al 5° sulle corde 4-3-2, poi aggiungi anulare (4ª corda, 7°) e medio (2ª corda, 6°): è la forma del IV. Alterna le due forme a tempo.", "Molti chitarristi non suonano la 6ª corda in Sol aperto: prova a evitarla e senti la differenza."], "errori": ["Corde che si scordano: dopo aver abbassato, riporta la corda SU fino alla nota.", "Barrè sporco: per gli accordi a un dito basta l'indice, ma ben dritto sul tasto."], "bpm": "70 → 110", "tabs": [{"steps": [{"5": "0", "4": "0", "3": "0", "2": "0"}, "|", {"4": "5", "3": "5", "2": "5"}, {"4": "7", "3": "5", "2": "6"}, {"4": "5", "3": "5", "2": "5"}, "|", {"5": "0", "4": "0", "3": "0", "2": "0"}], "labels": ["Sol", "", "Do", "Fa/Do", "Do", "", "Sol"], "caption": "Riff alla Keith Richards (Sol aperto)", "tuning": "openG"}, {"steps": [{"5": "0", "4": "0", "3": "0", "2": "0", "1": "0"}, "|", {"5": "5", "4": "5", "3": "5", "2": "5", "1": "5"}, "|", {"5": "7", "4": "7", "3": "7", "2": "7", "1": "7"}], "labels": ["I Sol", "", "IV Do", "", "V Re"], "caption": "I – IV – V con un dito", "tuning": "openG"}]}, "AP2": {"id": "AP2", "titolo": "Re aperto: pollice alternato (fingerpicking blues)", "scopo": "Indipendenza tra pollice e dita: il basso costante del Delta blues mentre le dita suonano la melodia.", "come": ["Accorda: 6ª Mi→Re, 3ª Sol→Fa♯, 2ª Si→La, 1ª Mi→Re. Corde a vuoto = Re maggiore.", "Il pollice (P) alterna 6ª e 4ª corda in quarti, sempre, come un metronomo.", "Indice (i) e medio (m) suonano 2ª e 1ª corda sui contrattempi.", "Cambia accordo con il barrè: 5° tasto = Sol (IV), 7° = La (V). Puoi suonare anche senza plettro."], "errori": ["Il pollice si ferma quando entrano le dita: prima automatizza il pollice da solo per 2 minuti."], "bpm": "60 → 100", "tabs": [{"steps": [{"6": "0"}, {"1": "0"}, {"4": "0"}, {"2": "0"}, {"6": "0"}, {"1": "0"}, {"4": "0"}, {"2": "0"}, "|", {"6": "5"}, {"1": "5"}, {"4": "5"}, {"2": "5"}], "labels": ["P", "m", "P", "i", "P", "m", "P", "i", "", "P", "m", "P", "i"], "caption": "P = pollice · i/m = indice/medio · I e IV in Re aperto", "tuning": "openD"}]}, "AP3": {"id": "AP3", "titolo": "Slide (bottleneck) in accordatura aperta", "scopo": "Il suono dello slide blues: intonazione, smorzamento e vibrato con il tubo.", "come": ["Slide al medio o all'anulare. Appoggialo sulle corde esattamente SOPRA il tasto metallico, senza premere fino al legno.", "Le dita dietro lo slide toccano leggermente le corde per smorzare i rumori.", "Il palmo destro (o le dita, se suoni senza plettro) smorza le corde che non suonano.", "Riff in Sol aperto: entra con uno slide al 12° tasto, poi frasi tra 12°, 10° e 15°. Aggiungi vibrato muovendo lo slide."], "errori": ["Note calanti o crescenti: lo slide deve stare sopra il tasto, non tra i tasti.", "Rumore di corde: più smorzamento con entrambe le mani."], "bpm": "60 → 90", "tabs": [{"steps": [{"1": "0"}, {"1": "/12"}, {"2": "12"}, {"1": "12"}, "|", {"1": "10"}, {"2": "10"}, {"3": "/12"}, {"1": "15~"}], "labels": ["", "slide", "", "", "", "", "", "slide", "vib."], "caption": "Riff slide in Sol aperto (/ = entra scivolando)", "tuning": "openG"}]}, "AP4": {"id": "AP4", "titolo": "DADGAD: bordoni e riff modali", "scopo": "Il suono 'sospeso' del DADGAD: melodie sopra le corde a vuoto che risuonano.", "come": ["Accorda: 6ª Mi→Re, 2ª Si→La, 1ª Mi→Re. Corde a vuoto = Re sus4.", "Arpeggia le corde a vuoto lentamente e lascia risuonare tutto.", "Riff: la 6ª corda a vuoto fa da bordone, mentre la melodia sale sulla 4ª corda (0 – 2 – 4 – 5).", "Inventa frasi usando solo 2 corde premute e le altre a vuoto."], "errori": ["Smorzare per errore le corde a vuoto: le dita devono essere ben arcuate."], "bpm": "60 → 100", "tabs": [{"steps": [{"6": "0"}, {"4": "0"}, {"3": "0"}, {"2": "0"}, {"1": "0"}, "|", {"6": "0", "4": "2"}, {"6": "0", "4": "4"}, {"6": "0", "4": "5"}, {"6": "0", "4": "4"}, {"6": "0", "4": "2"}], "labels": ["", "", "", "", "", "", "", "", "", "", ""], "caption": "Arpeggio Re sus4 · riff con bordone", "tuning": "dadgad"}]}, "AP5": {"id": "AP5", "titolo": "Drop D: power chord con un dito", "scopo": "Riff rock pesanti e veloci: con la 6ª corda abbassata il power chord si suona con un solo dito.", "come": ["Accorda solo la 6ª corda: Mi→Re (controlla l'ottava con la 4ª corda a vuoto).", "Power chord a un dito: indice a barrè sulle corde 6-5-4 allo stesso tasto (0 = Re5, 3 = Fa5, 5 = Sol5).", "Riff: colpi in palm mute sulla 6ª corda a vuoto, poi accordi a un dito accentati.", "Torna allo standard alzando la 6ª fino al Mi."], "errori": ["Toccare la 3ª corda durante il barrè: inclina leggermente l'indice per smorzarla."], "bpm": "80 → 140", "tabs": [{"steps": [{"6": "0"}, {"6": "0"}, {"6": "3", "5": "3", "4": "3"}, {"6": "0"}, {"6": "0"}, {"6": "5", "5": "5", "4": "5"}, {"6": "3", "5": "3", "4": "3"}, {"6": "0", "5": "0", "4": "0"}], "labels": ["PM", "PM", "Fa5", "PM", "PM", "Sol5", "Fa5", "Re5"], "caption": "Riff in Drop D", "tuning": "dropD"}]}, "TA1": {"id": "TA1", "titolo": "La nota del giorno", "scopo": "Imparare la tastiera una nota alla volta, il metodo più efficace e meno noioso.", "come": ["Scegli la nota indicata nella lezione. Trovala su ogni corda dal tasto 0 al 12.", "Suonala una volta per click (60 bpm), dalla 6ª corda alla 1ª e ritorno, dicendo il nome ad alta voce.", "Poi in ordine casuale. Poi senza guardare la tastiera.", "Verifica con la mappa delle note (PDF scale, pag. 3)."], "errori": ["Contare i tasti dalla corda a vuoto: devi 'vedere' la nota, non calcolarla."], "bpm": "60 → 90 (1 nota per click)", "tabs": []}, "TA2": {"id": "TA2", "titolo": "Le forme dell'ottava", "scopo": "Spostarsi sul manico ragionando per ottave.", "come": ["Forma 1: due corde più su e due tasti avanti (6ª→4ª, 5ª→3ª).", "Forma 2: se attraversi la corda Si servono tre tasti avanti (4ª→2ª, 3ª→1ª).", "Forma 3: tra 6ª e 1ª corda (e 5ª–2ª) la nota è la stessa due ottave sopra, allo stesso tasto (6ª e 1ª) o tre tasti avanti.", "Esercizio: suona la nota del giorno e tutte le sue ottave."], "errori": ["Dimenticare il 'salto' di un tasto quando entri nella corda Si."], "bpm": "60 → 90", "tabs": []}, "TA3": {"id": "TA3", "titolo": "Ciclo delle quarte", "scopo": "Conoscere tutte le 12 note velocemente e imparare il ciclo più usato in armonia.", "come": ["Ordine: Do – Fa – Si♭ – Mi♭ – La♭ – Re♭ – Sol♭ – Si – Mi – La – Re – Sol – (Do).", "Una nota per battuta (4 click), metronomo a 60, sulla 6ª o 5ª corda.", "Poi una nota ogni 2 click. Poi solo su una corda indicata. Variante: suona un power chord o un barrè per ogni nota."], "errori": ["Perdere il tempo per cercare la nota: meglio sbagliare che fermarsi."], "bpm": "60 → 100", "tabs": []}, "TA4": {"id": "TA4", "titolo": "Note naturali alla cieca", "scopo": "Velocità di riconoscimento sulla tastiera.", "come": ["Su una sola corda, suona le note naturali dal tasto 0 al 12 dicendo il nome.", "Poi: chiudi gli occhi, scegli un tasto a caso, suona, di' il nome, apri gli occhi e verifica.", "10 prove per corda; annota quante giuste. Inizia da 6ª e 5ª corda (toniche degli accordi barrè)."], "errori": ["Restare sempre nella zona 0–5: forza i tasti 7–12."], "bpm": "—", "tabs": []}, "TE1": {"id": "TE1", "titolo": "Gli intervalli sulla chitarra", "scopo": "Conoscere le distanze tra le note: base della teoria, dell'orecchio e degli arpeggi.", "come": ["Dal Do (5ª corda, 3° tasto) suona ogni intervallo sulla stessa corda: 2ª (+2 tasti), ♭3 (+3), 3 (+4), 4 (+5), ♭5 (+6), 5 (+7), 6 (+9), ♭7 (+10), ottava (+12).", "Forme su due corde: 4ª = corda sopra, stesso tasto; 5ª = corda sopra, 2 tasti avanti; 3 maggiore = corda sopra, 1 tasto indietro; ♭3 = corda sopra, 2 tasti indietro.", "Attenzione alla corda Si: passando dalla 3ª alla 2ª corda ogni forma si sposta di un tasto in avanti.", "Cantali mentre li suoni."], "errori": ["Dimenticare la 'correzione' della corda Si."], "bpm": "—", "tabs": []}, "TE2": {"id": "TE2", "titolo": "Arpeggi di triade", "scopo": "Suonare le note dell'accordo una alla volta: base per assoli che 'seguono' gli accordi.", "come": ["Triade maggiore = T – 3 – 5. Triade minore = T – ♭3 – 5.", "Do maggiore con tonica sulla 5ª corda e La minore con tonica sulla 6ª, su due ottave.", "Ogni giorno: arpeggia gli accordi del brano che stai studiando, uno per battuta."], "errori": ["Suonare 'a forma' senza sapere quali note stai suonando: di' ad alta voce T, 3, 5."], "bpm": "60 → 100", "tabs": [{"steps": [{"5": "3"}, {"4": "2"}, {"4": "5"}, {"3": "5"}, {"2": "5"}, {"1": "3"}, "|", {"6": "5"}, {"5": "3"}, {"5": "7"}, {"4": "7"}, {"3": "5"}, {"2": "5"}], "labels": ["T", "3", "5", "T", "3", "5", "", "T", "♭3", "5", "T", "♭3", "5"], "caption": "Do maggiore · La minore", "tuning": "std"}]}, "TE3": {"id": "TE3", "titolo": "Arpeggi di settima", "scopo": "Gli accordi del blues, del pop moderno e del funk.", "come": ["Maj7 = T 3 5 7. Settima di dominante (7) = T 3 5 ♭7. Minore 7 (m7) = T ♭3 5 ♭7.", "Suona i tre arpeggi su Do (tonica sulla 5ª corda, 3° tasto).", "Ascolta la differenza: maj7 'sognante', 7 'blues', m7 'morbido'."], "errori": ["Confondere 7 e maj7: la ♭7 è 2 tasti sotto l'ottava, la 7 è 1 tasto sotto."], "bpm": "60 → 90", "tabs": [{"steps": [{"5": "3"}, {"4": "2"}, {"4": "5"}, {"3": "4"}, "|", {"5": "3"}, {"4": "2"}, {"4": "5"}, {"3": "3"}, "|", {"5": "3"}, {"5": "6"}, {"4": "5"}, {"3": "3"}], "labels": ["T", "3", "5", "7", "", "T", "3", "5", "♭7", "", "T", "♭3", "5", "♭7"], "caption": "Do maj7 · Do7 · Do m7", "tuning": "std"}]}, "TE4": {"id": "TE4", "titolo": "Blues a 12 battute (ritmica boogie)", "scopo": "La forma più importante del rock e del blues: devi saperla suonare in ogni tonalità.", "come": ["Schema in La: La7 | La7 | La7 | La7 | Re7 | Re7 | La7 | La7 | Mi7 | Re7 | La7 | Mi7.", "Numeri: I – I – I – I – IV – IV – I – I – V – IV – I – V.", "Ritmica boogie: power chord che alterna quinta e sesta (5 – 5 – 6 – 6) su ogni accordo, prima dritta poi in shuffle (R5).", "Re7 = stessa forma spostata sulla 4ª corda; Mi7 = sulla 6ª corda a vuoto. Trasporta in Mi, Sol e Do."], "errori": ["Perdersi nel giro: conta le battute ad alta voce le prime volte."], "bpm": "70 → 120", "tabs": [{"steps": [{"5": "0", "4": "2"}, {"5": "0", "4": "2"}, {"5": "0", "4": "4"}, {"5": "0", "4": "4"}, {"5": "0", "4": "2"}, {"5": "0", "4": "2"}, {"5": "0", "4": "4"}, {"5": "0", "4": "4"}], "labels": ["5", "", "6", "", "5", "", "6", ""], "caption": "Battuta di La (per Re: corde 4-3, per Mi: corde 6-5)", "tuning": "std"}]}, "TE5": {"id": "TE5", "titolo": "Gradi e progressioni pop", "scopo": "Capire la struttura dei brani pop/rock per suonarli (e trovarli a orecchio) più in fretta.", "come": ["In una tonalità maggiore gli accordi sui gradi sono: I maj, ii m, iii m, IV maj, V maj, vi m, vii dim.", "In Sol: Sol, Lam, Sim, Do, Re, Mim, Fa♯dim. In Do: Do, Rem, Mim, Fa, Sol, Lam, Si dim.", "Progressioni da conoscere: I–V–vi–IV, I–IV–V, vi–IV–I–V, I–vi–IV–V.", "Suona ogni progressione in Sol e in Do con accordi aperti, poi con i barrè."], "errori": ["Imparare i nomi senza suonarli: ogni progressione va sentita e suonata."], "bpm": "70 → 110", "tabs": []}, "OR1": {"id": "OR1", "titolo": "Canta, poi suona", "scopo": "Collegare orecchio, voce e strumento: la base del suonare a orecchio.", "come": ["Suona una nota, cantala. Poi canta una nota a caso e trovala sulla chitarra.", "Poi frasi di 2–3 note: canta, poi suona.", "Non importa se la voce non è bella: serve solo a 'pensare' il suono."], "errori": ["Suonare prima di cantare: il punto è prevedere il suono."], "bpm": "—", "tabs": []}, "OR2": {"id": "OR2", "titolo": "Trova la tonica", "scopo": "Capire in che tonalità è un brano: il primo passo per suonarlo a orecchio.", "come": ["Ascolta un brano. Cerca la nota che suona 'casa', dove la musica si riposa.", "Suona quella nota sulle corde gravi sopra il brano: se tutto suona 'stabile', è la tonica.", "Poi capisci se è maggiore o minore (prova la 3 e la ♭3: quale si accorda?).", "Obiettivo: tonica in meno di 30 secondi."], "errori": ["Fidarsi della prima nota del brano: spesso non è la tonica."], "bpm": "—", "tabs": []}, "OR3": {"id": "OR3", "titolo": "Intervalli con l'app", "scopo": "Allenare il riconoscimento degli intervalli ogni giorno, anche lontano dalla chitarra.", "come": ["Usa un'app di ear training (riconoscimento intervalli e gradi della scala). 5 minuti, anche sul telefono.", "Associa ogni intervallo a un brano che conosci.", "Inizia con pochi intervalli (4ª, 5ª, ottava), aggiungi gli altri quando superi l'80% di risposte giuste."], "errori": ["Allenare troppi intervalli insieme all'inizio."], "bpm": "—", "tabs": []}, "OR4": {"id": "OR4", "titolo": "Trascrizione", "scopo": "Imparare riff e assoli direttamente dai dischi: il metodo con cui hanno imparato tutti i grandi.", "come": ["Scegli 4–8 battute. Prima trova la tonica (OR2), poi canta la frase, poi trovala sulla chitarra.", "Usa un'app o un lettore che rallenti l'audio senza cambiare l'intonazione.", "Scrivi la tablatura a mano. Solo alla fine confronta con una tablatura online: spesso sono sbagliate, fidati dell'orecchio.", "Fai attenzione all'accordatura del disco (alcuni brani sono mezzo tono sotto o in accordatura aperta)."], "errori": ["Cercare subito la tablatura: il valore dell'esercizio è la ricerca."], "bpm": "—", "tabs": []}}, "lessons": [{"n": 1, "week": 1, "day": "Lunedì", "focus": "Mano destra + tastiera", "tip": "Concentrati sull'uniformità della pennata. Se oggi hai solo 30 minuti, il blocco tecnica è quello da non saltare.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R1 → R2", "target": "60 / click 40", "steps": [{"type": "ex", "id": "R1"}, {"type": "ex", "id": "R2"}]}, {"name": "Tecnica: mano destra", "m30": 8, "m60": 15, "text": "MD1", "target": "70", "steps": [{"type": "ex", "id": "MD1"}]}, {"name": "Tastiera", "m30": 7, "m60": 15, "text": "TA1 nota del giorno: <b>Do</b> · TA2", "target": "60", "steps": [{"type": "ex", "id": "TA1", "note": "Do"}, {"type": "ex", "id": "TA2", "note": "Do"}]}, {"name": "Orecchio", "m30": 0, "m60": 5, "text": "OR1", "target": "—", "steps": [{"type": "ex", "id": "OR1"}]}, {"name": "Brano", "m30": 10, "m60": 15, "text": "Seven Nation Army", "target": "tempo originale o rallentato", "steps": [{"type": "song", "songs": ["Seven Nation Army"]}]}], "tema": "Fondamenta: pentatonica minore, riff e Sol aperto", "toniche": "Mi e La"}, {"n": 2, "week": 1, "day": "Martedì", "focus": "Legato, bending + scale", "tip": "Scale: una posizione → su una sola corda → per terze. Di' ad alta voce l'intervallo di ogni nota.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R1 → R3", "target": "60", "steps": [{"type": "ex", "id": "R1"}, {"type": "ex", "id": "R3"}]}, {"name": "Tecnica: legato e bending", "m30": 8, "m60": 15, "text": "LE1", "target": "60", "steps": [{"type": "ex", "id": "LE1"}]}, {"name": "Scale (PDF scale)", "m30": 7, "m60": 15, "text": "Pentatonica minore di Mi (pag. 75) e di La (pag. 80) + box 1 e 2 (pag. 4)", "target": "60", "steps": [{"type": "scale", "refs": [["pentamin", 4], ["pentamin", 9]]}]}, {"name": "Orecchio", "m30": 0, "m60": 5, "text": "OR1 (canta la scala prima di suonarla)", "target": "—", "steps": [{"type": "ex", "id": "OR1"}]}, {"name": "Applicazione", "m30": 10, "m60": 15, "text": "Improvvisa su una base con la scala di oggi: frasi brevi, appoggiati su T e 5, usa la tecnica del giorno", "target": "70", "steps": [{"type": "generic", "refs": [["pentamin", 4], ["pentamin", 9]]}]}], "tema": "Fondamenta: pentatonica minore, riff e Sol aperto", "toniche": "Mi e La"}, {"n": 3, "week": 1, "day": "Mercoledì", "focus": "Accordi, timing + orecchio", "tip": "Giornata senza tablature: tutto quello che suoni oggi lo trovi con l'orecchio.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R4 gap click", "target": "70", "steps": [{"type": "ex", "id": "R4"}]}, {"name": "Tecnica: accordi e ritmica", "m30": 8, "m60": 15, "text": "AC1", "target": "60", "steps": [{"type": "ex", "id": "AC1"}]}, {"name": "Tastiera", "m30": 0, "m60": 5, "text": "TA1 nota del giorno: <b>Re</b>", "target": "60", "steps": [{"type": "ex", "id": "TA1", "note": "Re"}]}, {"name": "Orecchio", "m30": 7, "m60": 15, "text": "OR2: Trova la tonica di 5 brani della tua playlist", "target": "—", "steps": [{"type": "ex", "id": "OR2"}]}, {"name": "Brano a orecchio", "m30": 10, "m60": 15, "text": "OR4 su Seven Nation Army", "target": "—", "steps": [{"type": "ex", "id": "OR4"}]}], "tema": "Fondamenta: pentatonica minore, riff e Sol aperto", "toniche": "Mi e La"}, {"n": 4, "week": 1, "day": "Giovedì", "focus": "Teoria + accordatura aperta", "tip": "Fai teoria e tastiera in accordatura standard, poi riaccorda per gli ultimi due blocchi. A fine sessione torna in standard.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R1 → R2", "target": "65 / click 42", "steps": [{"type": "ex", "id": "R1"}, {"type": "ex", "id": "R2"}]}, {"name": "Teoria", "m30": 7, "m60": 15, "text": "TE1: Intervalli: 4ª, 5ª e ottava (forme e suono, attenzione alla corda Si)", "target": "60", "steps": [{"type": "ex", "id": "TE1"}]}, {"name": "Tastiera", "m30": 0, "m60": 5, "text": "TA1 nota del giorno: <b>La</b>", "target": "60", "steps": [{"type": "ex", "id": "TA1", "note": "La"}]}, {"name": "Accordatura aperta", "m30": 8, "m60": 15, "text": "AP1", "target": "70", "steps": [{"type": "ex", "id": "AP1"}]}, {"name": "Applicazione in accordatura aperta", "m30": 10, "m60": 15, "text": "Brown Sugar (Rolling Stones): il riff in Sol aperto", "target": "70", "steps": [{"type": "song", "songs": ["Brown Sugar"], "fb": {"mode": "scale", "k": "tri_mag", "pc": 7, "tuning": "openG"}}]}], "tema": "Fondamenta: pentatonica minore, riff e Sol aperto", "toniche": "Mi e La"}, {"n": 5, "week": 1, "day": "Venerdì", "focus": "Ritmica + blues", "tip": "Oggi conta il feel: registra 1 minuto del brano e riascoltalo subito.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R3 → R5 shuffle", "target": "60", "steps": [{"type": "ex", "id": "R3"}, {"type": "ex", "id": "R5"}]}, {"name": "Tecnica: mano destra", "m30": 8, "m60": 15, "text": "MD4", "target": "80", "steps": [{"type": "ex", "id": "MD4"}]}, {"name": "Scale (PDF scale)", "m30": 7, "m60": 15, "text": "Scala blues di Mi (pag. 88) e di La (pag. 93)", "target": "65", "steps": [{"type": "scale", "refs": [["blues", 4], ["blues", 9]]}]}, {"name": "Orecchio", "m30": 0, "m60": 5, "text": "OR2 su 2 brani nuovi", "target": "—", "steps": [{"type": "ex", "id": "OR2"}]}, {"name": "Brano", "m30": 10, "m60": 15, "text": "Knockin' on Heaven's Door", "target": "tempo originale o rallentato", "steps": [{"type": "song", "songs": ["Knockin' on Heaven's Door"]}]}], "tema": "Fondamenta: pentatonica minore, riff e Sol aperto", "toniche": "Mi e La"}, {"n": 6, "week": 1, "day": "Sabato", "focus": "Jam + registrazione", "tip": "Sabato è il giorno della musica: niente esercizi isolati, suona tutto 'come in sala prove'.", "blocks": [{"name": "Riscaldamento libero", "m30": 5, "m60": 10, "text": "R2 con una base", "target": "—", "steps": [{"type": "ex", "id": "R2"}]}, {"name": "Ripasso punto debole", "m30": 5, "m60": 10, "text": "L'esercizio della settimana con il bpm più basso", "target": "+5 bpm", "steps": [{"type": "generic"}]}, {"name": "Tastiera", "m30": 5, "m60": 10, "text": "TA4 note naturali alla cieca (6ª e 5ª corda)", "target": "60", "steps": [{"type": "ex", "id": "TA4"}]}, {"name": "Brani completi", "m30": 15, "m60": 20, "text": "Seven Nation Army + Knockin' on Heaven's Door dall'inizio alla fine, su disco", "target": "—", "steps": [{"type": "song", "songs": ["Seven Nation Army", "Knockin' on Heaven's Door"]}]}, {"name": "Registrazione", "m30": 0, "m60": 10, "text": "Registra un brano completo e compila la revisione della settimana", "target": "—", "steps": [{"type": "generic"}]}], "tema": "Fondamenta: pentatonica minore, riff e Sol aperto", "toniche": "Mi e La"}, {"n": 7, "week": 2, "day": "Lunedì", "focus": "Mano destra + tastiera", "tip": "Concentrati sull'uniformità della pennata. Se oggi hai solo 30 minuti, il blocco tecnica è quello da non saltare.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R1 → R2", "target": "65 / click 42", "steps": [{"type": "ex", "id": "R1"}, {"type": "ex", "id": "R2"}]}, {"name": "Tecnica: mano destra", "m30": 8, "m60": 15, "text": "MD2", "target": "75", "steps": [{"type": "ex", "id": "MD2"}]}, {"name": "Tastiera", "m30": 7, "m60": 15, "text": "TA1 nota del giorno: <b>Si</b> · TA2", "target": "60", "steps": [{"type": "ex", "id": "TA1", "note": "Si"}, {"type": "ex", "id": "TA2", "note": "Si"}]}, {"name": "Orecchio", "m30": 0, "m60": 5, "text": "OR1", "target": "—", "steps": [{"type": "ex", "id": "OR1"}]}, {"name": "Brano", "m30": 10, "m60": 15, "text": "Wonderwall", "target": "tempo originale o rallentato", "steps": [{"type": "song", "songs": ["Wonderwall"]}]}], "tema": "Il suono del pop: maggiore, accordi barrè e strumming + Re aperto", "toniche": "Sol e Do"}, {"n": 8, "week": 2, "day": "Martedì", "focus": "Legato, bending + scale", "tip": "Scale: una posizione → su una sola corda → per terze. Di' ad alta voce l'intervallo di ogni nota.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R1 → R3", "target": "65", "steps": [{"type": "ex", "id": "R1"}, {"type": "ex", "id": "R3"}]}, {"name": "Tecnica: legato e bending", "m30": 8, "m60": 15, "text": "LE2", "target": "65", "steps": [{"type": "ex", "id": "LE2"}]}, {"name": "Scale (PDF scale)", "m30": 7, "m60": 15, "text": "Scala maggiore di Sol (pag. 13) e di Do (pag. 6)", "target": "65", "steps": [{"type": "scale", "refs": [["maggiore", 7], ["maggiore", 0]]}]}, {"name": "Orecchio", "m30": 0, "m60": 5, "text": "OR1 (canta la scala prima di suonarla)", "target": "—", "steps": [{"type": "ex", "id": "OR1"}]}, {"name": "Applicazione", "m30": 10, "m60": 15, "text": "Improvvisa su una base con la scala di oggi: frasi brevi, appoggiati su T e 5, usa la tecnica del giorno", "target": "75", "steps": [{"type": "generic", "refs": [["maggiore", 7], ["maggiore", 0]]}]}], "tema": "Il suono del pop: maggiore, accordi barrè e strumming + Re aperto", "toniche": "Sol e Do"}, {"n": 9, "week": 2, "day": "Mercoledì", "focus": "Accordi, timing + orecchio", "tip": "Giornata senza tablature: tutto quello che suoni oggi lo trovi con l'orecchio.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R4 gap click", "target": "75", "steps": [{"type": "ex", "id": "R4"}]}, {"name": "Tecnica: accordi e ritmica", "m30": 8, "m60": 15, "text": "AC2", "target": "65", "steps": [{"type": "ex", "id": "AC2"}]}, {"name": "Tastiera", "m30": 0, "m60": 5, "text": "TA1 nota del giorno: <b>Fa♯/Sol♭</b>", "target": "60", "steps": [{"type": "ex", "id": "TA1", "note": "Fa♯/Sol♭"}]}, {"name": "Orecchio", "m30": 7, "m60": 15, "text": "OR3: Intervalli con l'app + OR1 (canta e suona)", "target": "—", "steps": [{"type": "ex", "id": "OR3"}, {"type": "ex", "id": "OR1"}]}, {"name": "Brano a orecchio", "m30": 10, "m60": 15, "text": "OR4 sul brano scelto", "target": "—", "steps": [{"type": "ex", "id": "OR4"}]}], "tema": "Il suono del pop: maggiore, accordi barrè e strumming + Re aperto", "toniche": "Sol e Do"}, {"n": 10, "week": 2, "day": "Giovedì", "focus": "Teoria + accordatura aperta", "tip": "Fai teoria e tastiera in accordatura standard, poi riaccorda per gli ultimi due blocchi. A fine sessione torna in standard.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R1 → R2", "target": "70 / click 44", "steps": [{"type": "ex", "id": "R1"}, {"type": "ex", "id": "R2"}]}, {"name": "Teoria", "m30": 7, "m60": 15, "text": "TE2: Triadi maggiori e minori: Do, Sol, La minore, Mi minore", "target": "65", "steps": [{"type": "ex", "id": "TE2"}]}, {"name": "Tastiera", "m30": 0, "m60": 5, "text": "TA1 nota del giorno: <b>Si♭</b>", "target": "60", "steps": [{"type": "ex", "id": "TA1", "note": "Si♭"}]}, {"name": "Accordatura aperta", "m30": 8, "m60": 15, "text": "AP2", "target": "75", "steps": [{"type": "ex", "id": "AP2"}]}, {"name": "Applicazione in accordatura aperta", "m30": 10, "m60": 15, "text": "Blues a 12 battute in Re aperto con il pollice alternato (I = a vuoto, IV = 5° tasto, V = 7° tasto)", "target": "75", "steps": [{"type": "generic", "fb": {"mode": "scale", "k": "tri_mag", "pc": 2, "tuning": "openD"}}]}], "tema": "Il suono del pop: maggiore, accordi barrè e strumming + Re aperto", "toniche": "Sol e Do"}, {"n": 11, "week": 2, "day": "Venerdì", "focus": "Ritmica + blues", "tip": "Oggi conta il feel: registra 1 minuto del brano e riascoltalo subito.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R3 → R5 shuffle", "target": "65", "steps": [{"type": "ex", "id": "R3"}, {"type": "ex", "id": "R5"}]}, {"name": "Tecnica: mano destra", "m30": 8, "m60": 15, "text": "MD5", "target": "75", "steps": [{"type": "ex", "id": "MD5"}]}, {"name": "Scale (PDF scale)", "m30": 7, "m60": 15, "text": "Pentatonica maggiore di Sol (pag. 65) e di Do (pag. 58)", "target": "70", "steps": [{"type": "scale", "refs": [["pentamag", 7], ["pentamag", 0]]}]}, {"name": "Orecchio", "m30": 0, "m60": 5, "text": "OR2 su 2 brani nuovi", "target": "—", "steps": [{"type": "ex", "id": "OR2"}]}, {"name": "Brano", "m30": 10, "m60": 15, "text": "Sunshine of Your Love", "target": "tempo originale o rallentato", "steps": [{"type": "song", "songs": ["Sunshine of Your Love"]}]}], "tema": "Il suono del pop: maggiore, accordi barrè e strumming + Re aperto", "toniche": "Sol e Do"}, {"n": 12, "week": 2, "day": "Sabato", "focus": "Jam + registrazione", "tip": "Sabato è il giorno della musica: niente esercizi isolati, suona tutto 'come in sala prove'.", "blocks": [{"name": "Riscaldamento libero", "m30": 5, "m60": 10, "text": "R2 con una base", "target": "—", "steps": [{"type": "ex", "id": "R2"}]}, {"name": "Ripasso punto debole", "m30": 5, "m60": 10, "text": "L'esercizio della settimana con il bpm più basso", "target": "+5 bpm", "steps": [{"type": "generic"}]}, {"name": "Tastiera", "m30": 5, "m60": 10, "text": "TA3 ciclo delle quarte", "target": "60", "steps": [{"type": "ex", "id": "TA3"}]}, {"name": "Brani completi", "m30": 15, "m60": 20, "text": "Wonderwall + Sunshine of Your Love dall'inizio alla fine, su disco", "target": "—", "steps": [{"type": "song", "songs": ["Wonderwall", "Sunshine of Your Love"]}]}, {"name": "Registrazione", "m30": 0, "m60": 10, "text": "Registra un brano completo e compila la revisione della settimana", "target": "—", "steps": [{"type": "generic"}]}], "tema": "Il suono del pop: maggiore, accordi barrè e strumming + Re aperto", "toniche": "Sol e Do"}, {"n": 13, "week": 3, "day": "Lunedì", "focus": "Mano destra + tastiera", "tip": "Concentrati sull'uniformità della pennata. Se oggi hai solo 30 minuti, il blocco tecnica è quello da non saltare.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R1 → R2", "target": "70 / click 45", "steps": [{"type": "ex", "id": "R1"}, {"type": "ex", "id": "R2"}]}, {"name": "Tecnica: mano destra", "m30": 8, "m60": 15, "text": "MD3", "target": "80", "steps": [{"type": "ex", "id": "MD3"}]}, {"name": "Tastiera", "m30": 7, "m60": 15, "text": "TA1 nota del giorno: <b>Mi♭/Re♯</b> · TA2", "target": "60", "steps": [{"type": "ex", "id": "TA1", "note": "Mi♭/Re♯"}, {"type": "ex", "id": "TA2", "note": "Mi♭/Re♯"}]}, {"name": "Orecchio", "m30": 0, "m60": 5, "text": "OR1", "target": "—", "steps": [{"type": "ex", "id": "OR1"}]}, {"name": "Brano", "m30": 10, "m60": 15, "text": "Pride and Joy", "target": "tempo originale o rallentato", "steps": [{"type": "song", "songs": ["Pride and Joy"]}]}], "tema": "Blues, shuffle e slide", "toniche": "La e Re"}, {"n": 14, "week": 3, "day": "Martedì", "focus": "Legato, bending + scale", "tip": "Scale: una posizione → su una sola corda → per terze. Di' ad alta voce l'intervallo di ogni nota.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R1 → R3", "target": "70", "steps": [{"type": "ex", "id": "R1"}, {"type": "ex", "id": "R3"}]}, {"name": "Tecnica: legato e bending", "m30": 8, "m60": 15, "text": "LE3", "target": "70", "steps": [{"type": "ex", "id": "LE3"}]}, {"name": "Scale (PDF scale)", "m30": 7, "m60": 15, "text": "Pentatonica minore di La (pag. 80) e di Re (pag. 73) + box 3, 4 e 5 (pag. 4)", "target": "70", "steps": [{"type": "scale", "refs": [["pentamin", 9], ["pentamin", 2]]}]}, {"name": "Orecchio", "m30": 0, "m60": 5, "text": "OR1 (canta la scala prima di suonarla)", "target": "—", "steps": [{"type": "ex", "id": "OR1"}]}, {"name": "Applicazione", "m30": 10, "m60": 15, "text": "Improvvisa su una base con la scala di oggi: frasi brevi, appoggiati su T e 5, usa la tecnica del giorno", "target": "80", "steps": [{"type": "generic", "refs": [["pentamin", 9], ["pentamin", 2]]}]}], "tema": "Blues, shuffle e slide", "toniche": "La e Re"}, {"n": 15, "week": 3, "day": "Mercoledì", "focus": "Accordi, timing + orecchio", "tip": "Giornata senza tablature: tutto quello che suoni oggi lo trovi con l'orecchio.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R4 gap click", "target": "80", "steps": [{"type": "ex", "id": "R4"}]}, {"name": "Tecnica: accordi e ritmica", "m30": 8, "m60": 15, "text": "AC3", "target": "70", "steps": [{"type": "ex", "id": "AC3"}]}, {"name": "Tastiera", "m30": 0, "m60": 5, "text": "TA1 nota del giorno: <b>Do</b>", "target": "60", "steps": [{"type": "ex", "id": "TA1", "note": "Do"}]}, {"name": "Orecchio", "m30": 7, "m60": 15, "text": "OR4: Trascrivi il riff di un brano blues-rock (4 battute)", "target": "—", "steps": [{"type": "ex", "id": "OR4"}]}, {"name": "Brano a orecchio", "m30": 10, "m60": 15, "text": "OR4 sul brano scelto", "target": "—", "steps": [{"type": "ex", "id": "OR4"}]}], "tema": "Blues, shuffle e slide", "toniche": "La e Re"}, {"n": 16, "week": 3, "day": "Giovedì", "focus": "Teoria + accordatura aperta", "tip": "Fai teoria e tastiera in accordatura standard, poi riaccorda per gli ultimi due blocchi. A fine sessione torna in standard.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R1 → R2", "target": "75 / click 47", "steps": [{"type": "ex", "id": "R1"}, {"type": "ex", "id": "R2"}]}, {"name": "Teoria", "m30": 7, "m60": 15, "text": "TE4: Blues a 12 battute in La: ritmica boogie dritta e in shuffle", "target": "70", "steps": [{"type": "ex", "id": "TE4"}]}, {"name": "Tastiera", "m30": 0, "m60": 5, "text": "TA1 nota del giorno: <b>Fa</b>", "target": "60", "steps": [{"type": "ex", "id": "TA1", "note": "Fa"}]}, {"name": "Accordatura aperta", "m30": 8, "m60": 15, "text": "AP3", "target": "80", "steps": [{"type": "ex", "id": "AP3"}]}, {"name": "Applicazione in accordatura aperta", "m30": 10, "m60": 15, "text": "Rollin' and Tumblin' (tradizionale): slide in Sol aperto", "target": "80", "steps": [{"type": "song", "songs": ["Rollin' and Tumblin'"], "fb": {"mode": "scale", "k": "blues", "pc": 7, "tuning": "openG"}}]}], "tema": "Blues, shuffle e slide", "toniche": "La e Re"}, {"n": 17, "week": 3, "day": "Venerdì", "focus": "Ritmica + blues", "tip": "Oggi conta il feel: registra 1 minuto del brano e riascoltalo subito.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R3 → R5 shuffle", "target": "70", "steps": [{"type": "ex", "id": "R3"}, {"type": "ex", "id": "R5"}]}, {"name": "Tecnica: mano destra", "m30": 8, "m60": 15, "text": "MD6", "target": "90", "steps": [{"type": "ex", "id": "MD6"}]}, {"name": "Scale (PDF scale)", "m30": 7, "m60": 15, "text": "Scala blues di Re (pag. 86) e misolidia di La (pag. 119)", "target": "75", "steps": [{"type": "scale", "refs": [["blues", 2], ["misolidia", 9]]}]}, {"name": "Orecchio", "m30": 0, "m60": 5, "text": "OR2 su 2 brani nuovi", "target": "—", "steps": [{"type": "ex", "id": "OR2"}]}, {"name": "Brano", "m30": 10, "m60": 15, "text": "Sweet Home Chicago", "target": "tempo originale o rallentato", "steps": [{"type": "song", "songs": ["Sweet Home Chicago"]}]}], "tema": "Blues, shuffle e slide", "toniche": "La e Re"}, {"n": 18, "week": 3, "day": "Sabato", "focus": "Jam + registrazione", "tip": "Sabato è il giorno della musica: niente esercizi isolati, suona tutto 'come in sala prove'.", "blocks": [{"name": "Riscaldamento libero", "m30": 5, "m60": 10, "text": "R2 con una base", "target": "—", "steps": [{"type": "ex", "id": "R2"}]}, {"name": "Ripasso punto debole", "m30": 5, "m60": 10, "text": "L'esercizio della settimana con il bpm più basso", "target": "+5 bpm", "steps": [{"type": "generic"}]}, {"name": "Tastiera", "m30": 5, "m60": 10, "text": "TA3 ciclo delle quarte", "target": "60", "steps": [{"type": "ex", "id": "TA3"}]}, {"name": "Brani completi", "m30": 15, "m60": 20, "text": "Pride and Joy + Sweet Home Chicago dall'inizio alla fine, su disco", "target": "—", "steps": [{"type": "song", "songs": ["Pride and Joy", "Sweet Home Chicago"]}]}, {"name": "Registrazione", "m30": 0, "m60": 10, "text": "Registra un brano completo e compila la revisione della settimana", "target": "—", "steps": [{"type": "generic"}]}], "tema": "Blues, shuffle e slide", "toniche": "La e Re"}, {"n": 19, "week": 4, "day": "Lunedì", "focus": "Mano destra + tastiera", "tip": "Concentrati sull'uniformità della pennata. Se oggi hai solo 30 minuti, il blocco tecnica è quello da non saltare.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R1 → R2", "target": "75 / click 47", "steps": [{"type": "ex", "id": "R1"}, {"type": "ex", "id": "R2"}]}, {"name": "Tecnica: mano destra", "m30": 8, "m60": 15, "text": "MD1", "target": "85", "steps": [{"type": "ex", "id": "MD1"}]}, {"name": "Tastiera", "m30": 7, "m60": 15, "text": "TA3 ciclo delle quarte", "target": "60", "steps": [{"type": "ex", "id": "TA3"}]}, {"name": "Orecchio", "m30": 0, "m60": 5, "text": "OR1", "target": "—", "steps": [{"type": "ex", "id": "OR1"}]}, {"name": "Brano", "m30": 10, "m60": 15, "text": "Johnny B. Goode", "target": "tempo originale o rallentato", "steps": [{"type": "song", "songs": ["Johnny B. Goode"]}]}], "tema": "Consolidamento: velocità, brani completi, DADGAD e Drop D", "toniche": "libere"}, {"n": 20, "week": 4, "day": "Martedì", "focus": "Legato, bending + scale", "tip": "Scale: una posizione → su una sola corda → per terze. Di' ad alta voce l'intervallo di ogni nota.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R1 → R3", "target": "75", "steps": [{"type": "ex", "id": "R1"}, {"type": "ex", "id": "R3"}]}, {"name": "Tecnica: legato e bending", "m30": 8, "m60": 15, "text": "LE4", "target": "75", "steps": [{"type": "ex", "id": "LE4"}]}, {"name": "Scale (PDF scale)", "m30": 7, "m60": 15, "text": "Dorica di La (pag. 106) e di Mi (pag. 101)", "target": "75", "steps": [{"type": "scale", "refs": [["dorica", 9], ["dorica", 4]]}]}, {"name": "Orecchio", "m30": 0, "m60": 5, "text": "OR1 (canta la scala prima di suonarla)", "target": "—", "steps": [{"type": "ex", "id": "OR1"}]}, {"name": "Applicazione", "m30": 10, "m60": 15, "text": "Improvvisa su una base con la scala di oggi: frasi brevi, appoggiati su T e 5, usa la tecnica del giorno", "target": "85", "steps": [{"type": "generic", "refs": [["dorica", 9], ["dorica", 4]]}]}], "tema": "Consolidamento: velocità, brani completi, DADGAD e Drop D", "toniche": "libere"}, {"n": 21, "week": 4, "day": "Mercoledì", "focus": "Accordi, timing + orecchio", "tip": "Giornata senza tablature: tutto quello che suoni oggi lo trovi con l'orecchio.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R4 gap click", "target": "85", "steps": [{"type": "ex", "id": "R4"}]}, {"name": "Tecnica: accordi e ritmica", "m30": 8, "m60": 15, "text": "AC4", "target": "75", "steps": [{"type": "ex", "id": "AC4"}]}, {"name": "Tastiera", "m30": 0, "m60": 5, "text": "TA3 ciclo delle quarte", "target": "60", "steps": [{"type": "ex", "id": "TA3"}]}, {"name": "Orecchio", "m30": 7, "m60": 15, "text": "OR4: Trascrivi 8 battute di un brano pop a tua scelta", "target": "—", "steps": [{"type": "ex", "id": "OR4"}]}, {"name": "Brano a orecchio", "m30": 10, "m60": 15, "text": "OR4 sul brano scelto", "target": "—", "steps": [{"type": "ex", "id": "OR4"}]}], "tema": "Consolidamento: velocità, brani completi, DADGAD e Drop D", "toniche": "libere"}, {"n": 22, "week": 4, "day": "Giovedì", "focus": "Teoria + accordatura aperta", "tip": "Fai teoria e tastiera in accordatura standard, poi riaccorda per gli ultimi due blocchi. A fine sessione torna in standard.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R1 → R2", "target": "80 / click 49", "steps": [{"type": "ex", "id": "R1"}, {"type": "ex", "id": "R2"}]}, {"name": "Teoria", "m30": 7, "m60": 15, "text": "TE3: Arpeggi maj7, 7 e m7 su Do, Sol e La", "target": "75", "steps": [{"type": "ex", "id": "TE3"}]}, {"name": "Tastiera", "m30": 0, "m60": 5, "text": "TA4", "target": "60", "steps": [{"type": "ex", "id": "TA4"}]}, {"name": "Accordatura aperta", "m30": 8, "m60": 15, "text": "AP4 + AP5", "target": "85", "steps": [{"type": "ex", "id": "AP4"}, {"type": "ex", "id": "AP5"}]}, {"name": "Applicazione in accordatura aperta", "m30": 10, "m60": 15, "text": "Kashmir (Led Zeppelin): il riff in DADGAD", "target": "85", "steps": [{"type": "song", "songs": ["Kashmir"], "fb": {"mode": "scale", "k": "pentamin", "pc": 2, "tuning": "dadgad"}}]}], "tema": "Consolidamento: velocità, brani completi, DADGAD e Drop D", "toniche": "libere"}, {"n": 23, "week": 4, "day": "Venerdì", "focus": "Ritmica + blues", "tip": "Oggi conta il feel: registra 1 minuto del brano e riascoltalo subito.", "blocks": [{"name": "Riscaldamento + timing", "m30": 5, "m60": 10, "text": "R3 → R5 shuffle", "target": "75", "steps": [{"type": "ex", "id": "R3"}, {"type": "ex", "id": "R5"}]}, {"name": "Tecnica: mano destra", "m30": 8, "m60": 15, "text": "MD6", "target": "95", "steps": [{"type": "ex", "id": "MD6"}]}, {"name": "Scale (PDF scale)", "m30": 7, "m60": 15, "text": "La scala che ti è riuscita peggio nelle settimane 1–3", "target": "80", "steps": [{"type": "scale", "refs": []}]}, {"name": "Orecchio", "m30": 0, "m60": 5, "text": "OR2 su 2 brani nuovi", "target": "—", "steps": [{"type": "ex", "id": "OR2"}]}, {"name": "Brano", "m30": 10, "m60": 15, "text": "Wish You Were Here", "target": "tempo originale o rallentato", "steps": [{"type": "song", "songs": ["Wish You Were Here"]}]}], "tema": "Consolidamento: velocità, brani completi, DADGAD e Drop D", "toniche": "libere"}, {"n": 24, "week": 4, "day": "Sabato", "focus": "Jam + registrazione", "tip": "Sabato è il giorno della musica: niente esercizi isolati, suona tutto 'come in sala prove'.", "blocks": [{"name": "Riscaldamento libero", "m30": 5, "m60": 10, "text": "R2 con una base", "target": "—", "steps": [{"type": "ex", "id": "R2"}]}, {"name": "Ripasso punto debole", "m30": 5, "m60": 10, "text": "L'esercizio della settimana con il bpm più basso", "target": "+5 bpm", "steps": [{"type": "generic"}]}, {"name": "Tastiera", "m30": 5, "m60": 10, "text": "TA3 ciclo delle quarte", "target": "60", "steps": [{"type": "ex", "id": "TA3"}]}, {"name": "Brani completi", "m30": 15, "m60": 20, "text": "Johnny B. Goode + Wish You Were Here dall'inizio alla fine, su disco", "target": "—", "steps": [{"type": "song", "songs": ["Johnny B. Goode", "Wish You Were Here"]}]}, {"name": "Registrazione", "m30": 0, "m60": 10, "text": "Registra un brano completo e compila la revisione della settimana", "target": "—", "steps": [{"type": "generic"}]}], "tema": "Consolidamento: velocità, brani completi, DADGAD e Drop D", "toniche": "libere"}], "songs": [{"title": "Seven Nation Army", "artist": "The White Stripes", "focus": "Riff a note singole: primo brano da trovare a orecchio", "week": 1}, {"title": "Knockin' on Heaven's Door", "artist": "Bob Dylan", "focus": "Accordi aperti e cambi, strumming lento", "week": 1}, {"title": "Brown Sugar", "artist": "The Rolling Stones", "focus": "Riff in Sol aperto (accordatura aperta)", "week": 1}, {"title": "Wonderwall", "artist": "Oasis", "focus": "Strumming a sedicesimi (capotasto al 2° tasto)", "week": 2}, {"title": "Sunshine of Your Love", "artist": "Cream", "focus": "Riff blues-rock", "week": 2}, {"title": "Pride and Joy", "artist": "Stevie Ray Vaughan", "focus": "Shuffle e blues a 12 battute (originale accordato mezzo tono sotto)", "week": 3}, {"title": "Sweet Home Chicago", "artist": "Robert Johnson / tradizionale", "focus": "Blues a 12 battute, ritmica boogie", "week": 3}, {"title": "Rollin' and Tumblin'", "artist": "Tradizionale (Muddy Waters)", "focus": "Slide in accordatura aperta", "week": 3}, {"title": "Johnny B. Goode", "artist": "Chuck Berry", "focus": "Double stop e ritmica rock'n'roll", "week": 4}, {"title": "Wish You Were Here", "artist": "Pink Floyd", "focus": "Accordi aperti, intro melodica, pop-rock", "week": 4}, {"title": "Kashmir", "artist": "Led Zeppelin", "focus": "Riff in DADGAD (accordatura aperta)", "week": 4}]};
+</script>
+<script>
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = s => String(s).replace(/[&<>"]/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const store = {
+  get(k, d) { try { const v = localStorage.getItem("chitarra:" + k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem("chitarra:" + k, JSON.stringify(v)); } catch (e) {} }
+};
+function toast(msg) { const t = $("#toast"); t.textContent = msg; t.classList.add("show"); clearTimeout(toast._t); toast._t = setTimeout(() => t.classList.remove("show"), 2200); }
+const fmt = s => { s = Math.max(0, Math.round(s)); return Math.floor(s / 60) + ":" + String(s % 60).padStart(2, "0"); };
+const catOf = id => (id.match(/^[A-Z]+/) || ["GE"])[0];
+const linkIds = html => html.replace(/\b(R[1-5]|MD[1-6]|LE[1-4]|AC[1-4]|AP[1-5]|TA[1-4]|TE[1-5]|OR[1-4])\b/g, m => `<span class="tag c-${catOf(m)}">${m}</span>`);
+// icone (Material Symbols, path semplificati)
+const IC = {
+  back:"M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z",
+  prev:"M15.41 7.41 14 6l-6 6 6 6 1.41-1.41L10.83 12z", next:"M10 6 8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z",
+  play:"M8 5v14l11-7z", stop:"M6 6h12v12H6z", pause:"M6 19h4V5H6v14zm8-14v14h4V5h-4z",
+  replay:"M12 5V1L7 6l5 5V7c3.31 0 6 2.69 6 6s-2.69 6-6 6-6-2.69-6-6H4c0 4.42 3.58 8 8 8s8-3.58 8-8-3.58-8-8-8z",
+  list:"M3 13h2v-2H3v2zm0 4h2v-2H3v2zm0-8h2V7H3v2zm4 4h14v-2H7v2zm0 4h14v-2H7v2zM7 7v2h14V7H7z",
+  home:"M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z", check:"M9 16.17 4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z",
+  close:"M19 6.41 17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z",
+  up:"M7.41 15.41 12 10.83l4.59 4.58L18 14l-6-6-6 6z", down:"M7.41 8.59 12 13.17l4.59-4.58L18 10l-6 6-6-6z",
+  music:"M12 3v10.55A4 4 0 1 0 14 17V7h4V3h-6z", save:"M17 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V7l-4-4zm-5 16a3 3 0 1 1 0-6 3 3 0 0 1 0 6zm3-10H5V5h10v4z",
+  tune:"M3 17v2h6v-2H3zM3 5v2h10V5H3zm10 16v-2h8v-2h-8v-2h-2v6h2zM7 9v2H3v2h4v2h2V9H7zm14 4v-2H11v2h10zm-6-4h2V7h4V5h-4V3h-2v6z",
+  guitar:"M19.59 3 15 7.59l-.41-.41a2 2 0 0 0-2.83 0l-1.17 1.17A4.5 4.5 0 0 0 5.07 11.5a4.48 4.48 0 0 0-1.25 3.85A5 5 0 0 0 8.65 20.2a4.48 4.48 0 0 0 3.85-1.25 4.5 4.5 0 0 0 3.15-5.52l1.17-1.17a2 2 0 0 0 0-2.83L16.41 9 21 4.41zM9 17a2 2 0 1 1 0-4 2 2 0 0 1 0 4z",
+  timer:"M15 1H9v2h6V1zm-4 13h2V8h-2v6zm8.03-6.61 1.42-1.42c-.43-.51-.9-.99-1.41-1.41l-1.42 1.42A8.96 8.96 0 0 0 12 4a9 9 0 1 0 9 9c0-2.12-.74-4.07-1.97-5.61zM12 20a7 7 0 1 1 0-14 7 7 0 0 1 0 14z",
+  free:"M12 3a9 9 0 0 0 0 18 9 9 0 0 0 0-18zm-1 14.93V16h2v1.93A7 7 0 0 1 11 17.93zM12 7a5 5 0 1 0 0 10A5 5 0 0 0 12 7z"
+};
+const ic = (n, cls = "i") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true"><path d="${IC[n]}"/></svg>`;
+
+const TUNINGS = {"std": {"n": "Standard", "s": [["Mi", 4], ["Si", 11], ["Sol", 7], ["Re", 2], ["La", 9], ["Mi", 4]]}, "openG": {"n": "Sol aperto", "s": [["Re", 2], ["Si", 11], ["Sol", 7], ["Re", 2], ["Sol", 7], ["Re", 2]]}, "openD": {"n": "Re aperto", "s": [["Re", 2], ["La", 9], ["Fa♯", 6], ["Re", 2], ["La", 9], ["Re", 2]]}, "openE": {"n": "Mi aperto", "s": [["Mi", 4], ["Si", 11], ["Sol♯", 8], ["Mi", 4], ["Si", 11], ["Mi", 4]]}, "dadgad": {"n": "DADGAD", "s": [["Re", 2], ["La", 9], ["Sol", 7], ["Re", 2], ["La", 9], ["Re", 2]]}, "dropD": {"n": "Drop D", "s": [["Mi", 4], ["Si", 11], ["Sol", 7], ["Re", 2], ["La", 9], ["Re", 2]]}};
+// ================= teoria =================
+const IT = ["Do","Re","Mi","Fa","Sol","La","Si"], NAT = [0,2,4,5,7,9,11];
+const DEFOFF = {1:0,2:2,3:4,4:5,5:7,6:9,7:11};
+const ACC = {"-2":"♭♭","-1":"♭","0":"","1":"♯","2":"♯♯"};
+const SCALES = [
+  {k:"maggiore", g:"Scale", nome:"Scala maggiore", deg:[[1,0],[2,2],[3,4],[4,5],[5,7],[6,9],[7,11]]},
+  {k:"minore", g:"Scale", nome:"Minore naturale", deg:[[1,0],[2,2],[3,3],[4,5],[5,7],[6,8],[7,10]]},
+  {k:"armonica", g:"Scale", nome:"Minore armonica", deg:[[1,0],[2,2],[3,3],[4,5],[5,7],[6,8],[7,11]]},
+  {k:"melodica", g:"Scale", nome:"Minore melodica", deg:[[1,0],[2,2],[3,3],[4,5],[5,7],[6,9],[7,11]]},
+  {k:"pentamag", g:"Scale", nome:"Pentatonica maggiore", deg:[[1,0],[2,2],[3,4],[5,7],[6,9]]},
+  {k:"pentamin", g:"Scale", nome:"Pentatonica minore", deg:[[1,0],[3,3],[4,5],[5,7],[7,10]]},
+  {k:"blues", g:"Scale", nome:"Scala blues", deg:[[1,0],[3,3],[4,5],[5,6],[5,7],[7,10]]},
+  {k:"dorica", g:"Scale", nome:"Dorica", deg:[[1,0],[2,2],[3,3],[4,5],[5,7],[6,9],[7,10]]},
+  {k:"misolidia", g:"Scale", nome:"Misolidia", deg:[[1,0],[2,2],[3,4],[4,5],[5,7],[6,9],[7,10]]},
+  {k:"lidia", g:"Scale", nome:"Lidia", deg:[[1,0],[2,2],[3,4],[4,6],[5,7],[6,9],[7,11]]},
+  {k:"frigia", g:"Scale", nome:"Frigia", deg:[[1,0],[2,1],[3,3],[4,5],[5,7],[6,8],[7,10]]},
+  {k:"tri_mag", g:"Arpeggi", nome:"Triade maggiore", deg:[[1,0],[3,4],[5,7]]},
+  {k:"tri_min", g:"Arpeggi", nome:"Triade minore", deg:[[1,0],[3,3],[5,7]]},
+  {k:"maj7", g:"Arpeggi", nome:"Maj7", deg:[[1,0],[3,4],[5,7],[7,11]]},
+  {k:"dom7", g:"Arpeggi", nome:"Settima di dominante (7)", deg:[[1,0],[3,4],[5,7],[7,10]]},
+  {k:"m7", g:"Arpeggi", nome:"Minore 7 (m7)", deg:[[1,0],[3,3],[5,7],[7,10]]},
+  {k:"bluesline", g:"Arpeggi", nome:"Linea blues (T 3 5 6 ♭7)", deg:[[1,0],[3,4],[5,7],[6,9],[7,10]]},
+  {k:"interv", g:"Altro", nome:"Tutti gli intervalli", deg:[[1,0],[2,1],[2,2],[3,3],[3,4],[4,5],[5,6],[5,7],[6,8],[6,9],[7,10],[7,11]]},
+];
+const SC = Object.fromEntries(SCALES.map(s => [s.k, s]));
+function spell(tl, ta, deg) {
+  const tpc = ((NAT[tl] + ta) % 12 + 12) % 12;
+  return deg.map(([d, off]) => {
+    const l = (tl + d - 1) % 7, target = (tpc + off) % 12;
+    let a = ((target - NAT[l]) % 12 + 12) % 12; if (a > 6) a -= 12;
+    return {l, a, pc: target, d, off};
+  });
+}
+function bestTonic(pc, deg) {
+  const c = [];
+  for (let l = 0; l < 7; l++) for (const a of [-1, 0, 1]) {
+    if (((NAT[l] + a) % 12 + 12) % 12 !== pc) continue;
+    const ns = spell(l, a, deg);
+    let cost = ns.reduce((s, n) => s + Math.abs(n.a) + (Math.abs(n.a) > 1 ? 20 : 0), 0);
+    cost += a === 0 ? 0 : ((a === -1) !== (pc === 6) ? 0.1 : 0.2);
+    c.push([cost, l, a]);
+  }
+  c.sort((x, y) => x[0] - y[0]); return [c[0][1], c[0][2]];
+}
+const nname = (l, a) => IT[l] + ACC[a];
+function ilabel(d, off) { if (d === 1) return "T"; return ACC[off - DEFOFF[d]] + d; }
+function dcolor(d, off) {
+  if (d === 1) return "var(--d-t)";
+  if (d === 5 && off === 6) return "var(--d-b5)";
+  if (d === 3) return "var(--d-3)";
+  if (d === 5) return "var(--d-5)";
+  if (d === 7) return "var(--d-7)";
+  return "var(--d-o)";
+}
+const PCNAME = ["Do","Do♯/Re♭","Re","Re♯/Mi♭","Mi","Fa","Fa♯/Sol♭","Sol","Sol♯/La♭","La","La♯/Si♭","Si"];
+const PCSHORT = ["Do","Do♯","Re","Mi♭","Mi","Fa","Fa♯","Sol","La♭","La","Si♭","Si"];
+function parseNote(s) {
+  s = s.split("/")[0].trim();
+  const m = s.match(/^(Do|Re|Mi|Fa|Sol|La|Si)(♯|♭)?/); if (!m) return 0;
+  return (NAT[IT.indexOf(m[1])] + (m[2] === "♯" ? 1 : m[2] === "♭" ? -1 : 0) + 12) % 12;
+}
+function scaleInfo(k, pc) {
+  const s = SC[k]; const [l, a] = bestTonic(pc, s.deg);
+  const notes = spell(l, a, s.deg).map(n => ({pc: n.pc, iv: ilabel(n.d, n.off), nm: nname(n.l, n.a), col: dcolor(n.d, n.off), d: n.d, off: n.off}));
+  const offs = s.deg.map(x => x[1]).concat(12);
+  const steps = s.deg.map((_, i) => ({1:"S",2:"T",3:"1½T",4:"2T"})[offs[i + 1] - offs[i]] || "");
+  return {tonic: nname(l, a), notes, steps, nome: s.nome};
+}
+
+
+// ================= dati lezioni =================
+const EXS = DATA.exercises, LESSONS = DATA.lessons, SONGS = DATA.songs;
+const EXDEF = {
+  R1:{sub:2}, R2:{sub:2,pattern:"24"}, R3:{sub:1,cycle:true}, R4:{sub:2,gap:true}, R5:{sub:"sh"},
+  MD1:{sub:2}, MD2:{sub:2}, MD3:{sub:4}, MD4:{sub:2}, MD5:{sub:2}, MD6:{sub:2},
+  LE1:{sub:3}, LE2:{sub:1}, LE3:{sub:2}, LE4:{sub:2},
+  AC1:{sub:1}, AC2:{sub:1}, AC3:{sub:2}, AC4:{sub:1},
+  AP1:{sub:2}, AP2:{sub:2}, AP3:{sub:1}, AP4:{sub:2}, AP5:{sub:2},
+  TA1:{sub:1}, TA2:{sub:1}, TA3:{sub:1}, TA4:{sub:1},
+  TE1:{sub:1}, TE2:{sub:2}, TE3:{sub:2}, TE4:{sub:2}, TE5:{sub:1},
+  OR1:{sub:1}, OR2:{sub:1}, OR3:{sub:1}, OR4:{sub:1}
+};
+const FBDEF = {
+  TA1:"note", TA2:"note", TA3:{mode:"all"}, TA4:{mode:"nat"},
+  TE1:{mode:"scale",k:"interv",pc:0}, TE2:{mode:"scale",k:"tri_mag",pc:0}, TE3:{mode:"scale",k:"dom7",pc:0},
+  TE4:{mode:"scale",k:"bluesline",pc:9}, TE5:{mode:"scale",k:"maggiore",pc:7},
+  MD1:{mode:"scale",k:"pentamin",pc:9}, LE1:{mode:"scale",k:"pentamin",pc:9}, LE2:{mode:"scale",k:"pentamin",pc:9},
+  LE3:{mode:"scale",k:"pentamin",pc:9}, LE4:{mode:"scale",k:"pentamag",pc:9}, AC3:{mode:"scale",k:"pentamin",pc:4}, AC4:{mode:"scale",k:"tri_mag",pc:0},
+  AP1:{mode:"scale",k:"tri_mag",pc:7,tuning:"openG"}, AP2:{mode:"scale",k:"tri_mag",pc:2,tuning:"openD"},
+  AP3:{mode:"scale",k:"blues",pc:7,tuning:"openG"}, AP4:{mode:"scale",k:"pentamin",pc:2,tuning:"dadgad"},
+  AP5:{mode:"scale",k:"pentamin",pc:2,tuning:"dropD"},
+};
+
+function allocate(lesson, D) {
+  const raw = lesson.blocks.map(b => {
+    if (D <= 30) return b.m30 * D / 30;
+    if (D >= 60) return b.m60 * D / 60;
+    return b.m30 + (b.m60 - b.m30) * (D - 30) / 30;
+  });
+  const fl = raw.map(Math.floor); let rest = Math.round(D) - fl.reduce((a, b) => a + b, 0);
+  const ord = raw.map((v, i) => [v - Math.floor(v), i]).filter(x => raw[x[1]] > 0).sort((a, b) => b[0] - a[0]);
+  for (let i = 0; rest > 0 && ord.length; i = (i + 1) % ord.length, rest--) fl[ord[i][1]]++;
+  return fl;
+}
+function buildSteps(lesson, D) {
+  const mins = allocate(lesson, D); const out = [];
+  lesson.blocks.forEach((b, bi) => {
+    if (mins[bi] <= 0) return;
+    const sec = mins[bi] * 60 / b.steps.length;
+    b.steps.forEach(s => out.push(Object.assign({}, s, {block: b, bi, sec, bmin: mins[bi]})));
+  });
+  return out;
+}
+function stepTitle(s) {
+  if (s.type === "ex") return EXS[s.id].titolo;
+  if (s.type === "scale") return s.refs.length ? s.refs.map(r => scaleInfo(r[0], r[1]).nome + " di " + scaleInfo(r[0], r[1]).tonic).join(" · ") : "Scala a scelta";
+  if (s.type === "song") return s.songs.join(" + ");
+  return s.block.name;
+}
+function stepCode(s) { return s.type === "ex" ? [s.id, catOf(s.id)] : s.type === "scale" ? ["SCALA", "SC"] : s.type === "song" ? ["BRANO", "BR"] : ["LIBERO", "GE"]; }
+function parseBpm(step) {
+  const t = step.block.target || "";
+  if (step.type === "ex" && step.id === "R2") { const m = t.match(/click\s*(\d+)/); if (m) return 2 * +m[1]; }
+  const m = t.match(/^(\d+)/); if (m) return +m[1];
+  if (step.type === "ex") { const m2 = EXS[step.id].bpm.match(/(\d+)/); if (m2) return +m2[1]; }
+  return 80;
+}
+function goalBpm(step, start) {
+  if (step.type === "ex") { const m = EXS[step.id].bpm.match(/→\s*(\d+)/); if (m) return Math.max(+m[1], start + 10); }
+  return start + 20;
+}
+
+
+// ================= audio / metronomo =================
+let actx = null;
+function ctx() { if (!actx) actx = new (window.AudioContext || window.webkitAudioContext)(); if (actx.state === "suspended") actx.resume(); return actx; }
+function click(t, freq, gain, len = 0.035) {
+  const c = ctx(), o = c.createOscillator(), g = c.createGain();
+  o.type = "square"; o.frequency.value = freq;
+  g.gain.setValueAtTime(0.0001, t); g.gain.exponentialRampToValueAtTime(Math.max(0.0002, gain), t + 0.002);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + len);
+  const f = c.createBiquadFilter(); f.type = "lowpass"; f.frequency.value = freq * 3;
+  o.connect(f); f.connect(g); g.connect(c.destination); o.start(t); o.stop(t + len + 0.02);
+}
+function chime() { const c = ctx(), t = c.currentTime + 0.02; [880, 1109, 1319].forEach((f, i) => click(t + i * 0.16, f, 0.25, 0.4)); }
+
+const SUBSEQ = [1, 2, 3, 4, 3, 2];
+class Metronome {
+  constructor() {
+    Object.assign(this, {bpm: 80, beats: 4, sub: 2, pattern: "all", accent: true, vol: store.get("vol", 0.7), subVol: store.get("subvol", 0.45),
+      gap: {on: false, play: 2, mute: 2}, trainer: {on: false, inc: 5, every: 4, max: 120}, cycle: {on: false, every: 4, idx: 0},
+      running: false, onBar: null, onBpm: null, onSub: null, queue: []});
+  }
+  nsub() { return this.sub === "sh" ? 3 : +this.sub; }
+  start() {
+    const c = ctx(); this.running = true; this.beat = 0; this.subi = 0; this.bar = 0; this.next = c.currentTime + 0.08; this.queue = [];
+    this.cycle.idx = 0; if (this.cycle.on) { this.sub = SUBSEQ[0]; this.onSub && this.onSub(); }
+    this.timer = setInterval(() => this.tick(), 25); this.tick();
+    wake(true);
+  }
+  stop() { this.running = false; clearInterval(this.timer); this.queue = []; wake(false); }
+  muted() { return this.gap.on && (this.bar % (this.gap.play + this.gap.mute)) >= this.gap.play; }
+  tick() {
+    const c = ctx();
+    while (this.next < c.currentTime + 0.12) {
+      const n = this.nsub(), isBeat = this.subi === 0;
+      let sound = null;
+      if (!this.muted()) {
+        if (isBeat) {
+          const ok = this.pattern === "all" || (this.pattern === "24" && this.beat % 2 === 1) || (this.pattern === "1" && this.beat === 0);
+          if (ok) sound = (this.beat === 0 && this.accent && this.pattern === "all") ? "acc" : "beat";
+        } else if (this.pattern === "all") {
+          if (this.sub !== "sh" || this.subi === 2) sound = "sub";
+        }
+      }
+      if (sound === "acc") click(this.next, 1650, this.vol);
+      else if (sound === "beat") click(this.next, 1050, this.vol * 0.8);
+      else if (sound === "sub") click(this.next, 720, this.vol * this.subVol, 0.025);
+      this.queue.push({t: this.next, beat: this.beat, subi: this.subi, n, muted: this.muted(), bar: this.bar});
+      // avanzamento
+      this.next += 60 / this.bpm / n;
+      this.subi++;
+      if (this.subi >= n) { this.subi = 0; this.beat++;
+        if (this.beat >= this.beats) { this.beat = 0; this.bar++; this.barEvent(); } }
+    }
+  }
+  barEvent() {
+    const b = this.bar;
+    if (this.trainer.on && b % this.trainer.every === 0 && this.bpm < this.trainer.max) {
+      this.bpm = Math.min(this.trainer.max, this.bpm + this.trainer.inc); this.onBpm && this.onBpm(true);
+    }
+    if (this.cycle.on && b % this.cycle.every === 0) {
+      this.cycle.idx = (this.cycle.idx + 1) % SUBSEQ.length; this.sub = SUBSEQ[this.cycle.idx]; this.onSub && this.onSub();
+    }
+    this.onBar && this.onBar(b);
+  }
+}
+const metro = new Metronome();
+let wakeLock = null;
+async function wake(on) { try { if (on && "wakeLock" in navigator) wakeLock = await navigator.wakeLock.request("screen"); else if (!on && wakeLock) { await wakeLock.release(); wakeLock = null; } } catch (e) {} }
+
+
+
+// ================= stato =================
+let D = store.get("duration", 30);
+let route = {view: "home"};
+let steps = [], stepIdx = 0, timer = {left: 0, total: 1, running: false, h: null};
+const prefs = Object.assign({autoTimer: true, autoNext: false, labels: "iv", strings: 4, frets: 12, metroOpen: false}, store.get("prefs", {}));
+const savePrefs = () => store.set("prefs", prefs);
+
+// ================= tablatura =================
+function tabSVG(tab) {
+  const names = TUNINGS[tab.tuning || "std"].s.map(x => x[0]);
+  const longLab = (tab.labels || []).some(l => l && l.length > 3);
+  const cw = longLab ? 42 : 30, sp = 13, x0 = 34, n = tab.steps.length, top = 10;
+  const w = x0 + n * cw + 10, h = top + 5 * sp + (tab.labels && tab.labels.length ? 24 : 10);
+  let s = `<svg viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" style="max-width:100%;height:auto">`;
+  names.forEach((nm, i) => { const y = top + i * sp;
+    s += `<line x1="${x0}" y1="${y}" x2="${w - 6}" y2="${y}" stroke="var(--on3)" stroke-width="1"/>`;
+    s += `<text x="${x0 - 6}" y="${y + 3.5}" text-anchor="end" font-size="9" font-weight="600" fill="var(--on3)">${nm}</text>`; });
+  s += `<line x1="${x0}" y1="${top}" x2="${x0}" y2="${top + 5 * sp}" stroke="var(--on2)" stroke-width="2"/><line x1="${w - 6}" y1="${top}" x2="${w - 6}" y2="${top + 5 * sp}" stroke="var(--on2)" stroke-width="2"/>`;
+  tab.steps.forEach((st, j) => {
+    const cx = x0 + 6 + (j + .5) * cw;
+    if (st === "|") { s += `<line x1="${cx}" y1="${top}" x2="${cx}" y2="${top + 5 * sp}" stroke="var(--on2)" stroke-width="1.2"/>`; return; }
+    Object.entries(st).forEach(([k, txt]) => { const y = top + (+k - 1) * sp, hot = txt === "x" || txt === ">";
+      const fs = txt.length <= 2 ? 11.5 : txt.length === 3 ? 10 : 8.5, bw = Math.max(14, txt.length * fs * .62 + 4);
+      s += `<rect x="${cx - bw / 2}" y="${y - 6}" width="${bw}" height="12" rx="3" fill="var(--s2)"/>`;
+      s += `<text x="${cx}" y="${y + fs * .36}" text-anchor="middle" font-size="${fs}" font-weight="700" fill="${hot ? "var(--pri)" : "var(--on)"}">${esc(txt)}</text>`; });
+    const lab = tab.labels && tab.labels[j]; if (lab) s += `<text x="${cx}" y="${top + 5 * sp + 17}" text-anchor="middle" font-size="${lab.length > 4 ? 9 : 11}" font-weight="700" fill="var(--c-MD)">${esc(lab)}</text>`;
+  });
+  return s + "</svg>";
+}
+
+// ================= tastiera =================
+function fbCells(cfg) {
+  const m = {};
+  if (cfg.mode === "scale") { scaleInfo(cfg.k, cfg.pc).notes.forEach(n => m[n.pc] = n); return m; }
+  if (cfg.mode === "note") { m[cfg.pc] = {iv: PCSHORT[cfg.pc], nm: PCSHORT[cfg.pc], col: "var(--d-t)"}; return m; }
+  for (let pc = 0; pc < 12; pc++) {
+    const nat = NAT.includes(pc); if (cfg.mode === "nat" && !nat) continue;
+    const nm = nat ? IT[NAT.indexOf(pc)] : PCSHORT[pc];
+    m[pc] = {iv: nm, nm, col: pc === 0 ? "var(--d-t)" : nat ? "var(--d-3)" : "var(--d-alt)", light: !nat};
+  }
+  return m;
+}
+function fbSVG(cfg) {
+  const strings = TUNINGS[cfg.tuning || "std"].s;
+  const NF = prefs.frets, lw = 30, ow = 36, fw = NF > 12 ? 42 : 56, sp = 27, top = 4;
+  const W = lw + ow + NF * fw + 6, Hh = top + strings.length * sp + 18;
+  const bx = lw + ow, map = fbCells(cfg), r = 11.5;
+  let s = `<svg viewBox="0 0 ${W} ${Hh}" preserveAspectRatio="xMidYMid meet" style="min-width:${Math.round(W * .78)}px">`;
+  s += `<rect x="${bx}" y="${top}" width="${NF * fw}" height="${strings.length * sp}" fill="var(--wood)" rx="3"/>`;
+  const mid = top + strings.length * sp / 2;
+  [3,5,7,9,15,17,19,21].filter(f => f <= NF).forEach(f => s += `<circle cx="${bx + (f - .5) * fw}" cy="${mid}" r="4.5" fill="var(--fret)"/>`);
+  [12,24].filter(f => f <= NF).forEach(f => { s += `<circle cx="${bx + (f - .5) * fw}" cy="${top + strings.length * sp * .27}" r="4.5" fill="var(--fret)"/><circle cx="${bx + (f - .5) * fw}" cy="${top + strings.length * sp * .73}" r="4.5" fill="var(--fret)"/>`; });
+  for (let f = 1; f <= NF; f++) s += `<line x1="${bx + f * fw}" y1="${top}" x2="${bx + f * fw}" y2="${top + strings.length * sp}" stroke="var(--fret)" stroke-width="2"/>`;
+  s += `<rect x="${bx - 3}" y="${top - 1}" width="5" height="${strings.length * sp + 2}" fill="var(--nut)" rx="1"/>`;
+  strings.forEach(([nm, op], i) => {
+    const y = top + sp * (i + .5);
+    s += `<line x1="${lw + 4}" y1="${y}" x2="${bx + NF * fw}" y2="${y}" stroke="var(--string)" stroke-width="${1 + i * .5}"/>`;
+    s += `<text x="${lw - 3}" y="${y + 4}" text-anchor="end" font-size="11.5" font-weight="600" fill="var(--on2)">${nm}</text>`;
+    for (let f = 0; f <= NF; f++) {
+      const pc = (op + f) % 12, c = map[pc]; if (!c) continue;
+      const cx = f === 0 ? lw + ow / 2 : bx + (f - .5) * fw;
+      const tc = c.light ? "#e4e2e9" : "#15161b";
+      s += `<circle cx="${cx}" cy="${y}" r="${r}" fill="${c.col}"/>`;
+      if (cfg.mode === "scale" && prefs.labels === "both") {
+        s += `<text x="${cx}" y="${y - 1}" text-anchor="middle" font-size="8.5" font-weight="700" fill="${tc}">${esc(c.iv)}</text><text x="${cx}" y="${y + 8.5}" text-anchor="middle" font-size="7.5" font-weight="600" fill="${tc}">${esc(c.nm)}</text>`;
+      } else {
+        const lab = cfg.mode === "scale" && prefs.labels === "iv" ? c.iv : c.nm;
+        const fs = lab.length <= 2 ? 11 : lab.length <= 3 ? 10 : 8.5;
+        s += `<text x="${cx}" y="${y + fs * .36}" text-anchor="middle" font-size="${fs}" font-weight="700" fill="${tc}">${esc(lab)}</text>`;
+      }
+    }
+  });
+  for (let f = 0; f <= NF; f++) s += `<text x="${f === 0 ? lw + ow / 2 : bx + (f - .5) * fw}" y="${Hh - 3}" text-anchor="middle" font-size="10.5" fill="var(--on3)">${f}</text>`;
+  return s + "</svg>";
+}
+
+// ================= router =================
+const go = h => { location.hash = h; };
+window.addEventListener("hashchange", render);
+function parseHash() {
+  const h = location.hash.replace(/^#\/?/, "").split("/");
+  if (h[0] === "l" && h[1]) return {view: h[2] === "s" ? "step" : "lesson", n: +h[1], s: h[3] != null ? +h[3] : 0};
+  if (h[0] === "free") return {view: "free"};
+  return {view: "home"};
+}
+function render() {
+  if (metro.running) metro.stop();
+  stopTimer(); closeSheet();
+  route = parseHash();
+  document.body.classList.toggle("app-lock", route.view === "step" || route.view === "free");
+  ({home: renderHome, lesson: renderLesson, step: renderStep, free: renderFree})[route.view]();
+  window.scrollTo(0, 0);
+}
+const lessonSelect = cur => `<select id="lessonPick" aria-label="Vai alla lezione" style="max-width:min(46vw,320px)"><option value="">Vai alla lezione…</option>${[1,2,3,4].map(w => `<optgroup label="Settimana ${w}">${LESSONS.filter(l => l.week === w).map(l => `<option value="${l.n}" ${l.n === cur ? "selected" : ""}>${l.n}. ${l.day} — ${esc(l.focus)}</option>`).join("")}</optgroup>`).join("")}</select>`;
+function wirePick() { const p = $("#lessonPick"); if (p) p.onchange = () => p.value && go("#/l/" + p.value); }
+
+// ================= HOME =================
+function renderHome() {
+  const done = store.get("done", {}), last = store.get("last", null), recs = store.get("records", {});
+  let h = `<header class="topbar"><div class="brand"><b>${ic("music")}</b>Studio Chitarra</div><span style="flex:1"></span>${lessonSelect(null)}</header>
+  <div class="page"><div class="hero">
+    <section class="card">
+      <h1>Pronto per suonare?</h1>
+      <p class="muted" style="margin:6px 0 0">Imposta la durata della sessione: i tempi di ogni blocco si adattano in automatico.</p>
+      <div class="durbox"><button class="btn icon tonal" data-d="-5" aria-label="meno 5">−</button><div class="v" id="durV">${D}</div><button class="btn icon tonal" data-d="5" aria-label="più 5">+</button><span class="muted">minuti</span></div>
+      <div class="chips">${[20,30,45,60,90].map(v => `<button class="chip ${v === D ? "on" : ""}" data-set="${v}">${v} min</button>`).join("")}</div>
+      <div class="chips" style="margin-top:20px;gap:10px">
+        <a class="btn filled" href="#/l/${last || 1}">${ic("play")} ${last ? "Riprendi lezione " + last : "Inizia dalla lezione 1"}</a>
+        <a class="btn" href="#/free">${ic("tune")} Pratica libera</a>
+      </div>
+    </section>
+    <section class="card">
+      <div style="display:flex;justify-content:space-between;align-items:baseline"><h2>I tuoi record</h2><span class="muted small">${Object.keys(done).length}/24 lezioni completate</span></div>
+      <div class="progress" style="margin:12px 0 8px"><i style="width:${Object.keys(done).length / 24 * 100}%"></i></div>
+      ${Object.keys(recs).length ? `<table class="t">${Object.entries(recs).sort().map(([k, v]) => `<tr><td><span class="tag c-${catOf(k)}">${k}</span> ${esc(EXS[k] ? EXS[k].titolo : k)}</td><td class="num"><b style="color:var(--pri)">${v.best}</b> bpm<div class="small muted">ultimo ${v.last} · ${v.date}</div></td></tr>`).join("")}</table>`
+        : `<p class="muted small">Ancora nessun record. Durante un esercizio usa <b>Salva bpm</b> (scheda “3 su 3” del metronomo) per registrare il tempo massimo pulito.</p>`}
+    </section></div>`;
+  for (let w = 1; w <= 4; w++) {
+    const ls = LESSONS.filter(l => l.week === w);
+    h += `<section class="week"><div class="week-h"><h2>Settimana ${w}</h2><span class="muted small">${esc(ls[0].tema)} · toniche ${esc(ls[0].toniche)}</span></div><div class="lgrid">`;
+    ls.forEach(l => h += `<a class="lcard ${l.n === last ? "last" : ""}" href="#/l/${l.n}"><div class="n">LEZIONE ${l.n}</div><div class="d">${l.day}</div><div class="f">${esc(l.focus)}</div>${done[l.n] ? `<span class="ok">${ic("check")}</span>` : ""}</a>`);
+    h += `</div></section>`;
+  }
+  $("#app").innerHTML = h + `</div>`;
+  wirePick();
+  const setD = v => { D = Math.max(10, Math.min(180, Math.round(v))); store.set("duration", D); renderHome(); };
+  $$("[data-d]").forEach(b => b.onclick = () => setD(D + +b.dataset.d));
+  $$("[data-set]").forEach(b => b.onclick = () => setD(+b.dataset.set));
+}
+
+// ================= PANORAMICA =================
+function renderLesson() {
+  const L = LESSONS[route.n - 1]; if (!L) return go("#/");
+  store.set("last", L.n);
+  const mins = allocate(L, D), st = buildSteps(L, D);
+  $("#app").innerHTML = `<header class="topbar"><a class="btn icon text" href="#/" aria-label="Home">${ic("back")}</a><h2 style="flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis">Lezione ${L.n} · ${L.day}</h2>
+    <a class="btn icon text" href="#/l/${L.n - 1}" ${L.n > 1 ? "" : "disabled"} aria-label="Precedente">${ic("prev")}</a><a class="btn icon text" href="#/l/${L.n + 1}" ${L.n < 24 ? "" : "disabled"} aria-label="Successiva">${ic("next")}</a></header>
+  <div class="page">
+    <section class="card">
+      <span class="tag c-SC">SETTIMANA ${L.week} · ${esc(L.tema).toUpperCase()}</span>
+      <h1 style="margin-top:12px">${esc(L.focus)}</h1>
+      <p class="muted" style="margin:8px 0 0;max-width:80ch">${esc(L.tip)}</p>
+      <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin:20px 0 8px">
+        <span class="muted small">Durata</span>
+        <div class="chips">${[20,30,45,60,90].map(v => `<button class="chip ${v === D ? "on" : ""}" data-set="${v}">${v}'</button>`).join("")}</div>
+        <input type="number" id="durIn" min="10" max="180" step="5" value="${D}" aria-label="Durata in minuti"><span class="muted small">min</span>
+      </div>
+      <table class="t" style="margin-top:8px"><tr><th>Blocco</th><th>Esercizi</th><th class="num">Minuti</th><th class="num hide-xs">bpm obiettivo</th></tr>
+      ${L.blocks.map((b, i) => `<tr style="${mins[i] ? "" : "opacity:.4"}"><td><b style="font-weight:500">${esc(b.name)}</b></td><td>${linkIds(b.text)}</td><td class="num"><b>${mins[i] ? mins[i] + "'" : "—"}</b></td><td class="num hide-xs muted">${esc(b.target)}</td></tr>`).join("")}
+      </table>
+      <div style="display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap;margin-top:20px">
+        <span class="muted small">${st.length} pagine · ${D} minuti${mins.some(m => !m) ? " · i blocchi in grigio si attivano con più tempo" : ""}</span>
+        <a class="btn filled" href="#/l/${L.n}/s/0">${ic("play")} Inizia la lezione</a>
+      </div>
+    </section>
+  </div>`;
+  const setD = v => { D = Math.max(10, Math.min(180, Math.round(v))); store.set("duration", D); renderLesson(); };
+  $$("[data-set]").forEach(b => b.onclick = () => setD(+b.dataset.set));
+  $("#durIn").onchange = e => setD(+e.target.value || 30);
+}
+
+// ================= contenuti esercizio =================
+let fbState = null;
+function defaultFb(s) {
+  const small = innerHeight < 520;
+  if (s.fb) return Object.assign({open: !small, tuning: "std"}, s.fb);
+  if (s.refs && s.refs.length) return {mode: "scale", k: s.refs[0][0], pc: s.refs[0][1], open: s.type === "scale" || !small, tuning: "std"};
+  if (s.type === "scale") return {mode: "scale", k: "pentamin", pc: 9, open: true, tuning: "std"};
+  if (s.type === "ex") {
+    const d = FBDEF[s.id];
+    if (d === "note") return {mode: "note", pc: parseNote(s.note || "Do"), open: !small, tuning: "std"};
+    const hasTab = EXS[s.id].tabs.length > 0 && !(d && d.tuning) && innerHeight < 900;
+    if (d) return Object.assign({open: !small && !hasTab, tuning: "std"}, d);
+  }
+  return {mode: "scale", k: "pentamin", pc: 9, open: false, tuning: "std"};
+}
+function tuningBadge(tk) {
+  if (!tk || tk === "std") return "";
+  const tt = TUNINGS[tk];
+  return `<div class="notebadge">Accordatura <b>${esc(tt.n)}</b> <span>${esc(tt.s.map(x => x[0]).reverse().join(" "))} (dalla 6ª alla 1ª)</span></div>`;
+}
+function exBody(s) {
+  const ctx = `<div class="ctx"><span>Nella lezione:</span> ${linkIds(s.block.text)} <span style="margin-left:auto">bpm obiettivo <b style="color:var(--on)">${esc(s.block.target)}</b></span></div>`;
+  if (s.type === "ex") {
+    const e = EXS[s.id];
+    const tk = (FBDEF[s.id] && FBDEF[s.id].tuning) || (e.tabs[0] && e.tabs[0].tuning);
+    return `<p class="scopo">${esc(e.scopo)}</p>${tuningBadge(tk)}${s.note ? `<div class="notebadge">Nota del giorno <b>${esc(s.note)}</b></div>` : ""}${ctx}
+      <div class="cols"><div><h3>Come si fa</h3><ol>${e.come.map(x => `<li>${esc(x)}</li>`).join("")}</ol></div>
+      <div><h3>Attenzione a</h3><ul>${e.errori.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+        ${e.tabs.length ? `<h3>Tablatura</h3>${e.tabs.map(t => `<div class="tabbox"><div class="cap">${esc(t.caption || "")}</div>${tabSVG(t)}</div>`).join("")}<div class="legendline">↓↑ pennata · PM palm mute · h hammer-on · p pull-off · b bending · r rilascio · / \\ slide · ~ vibrato · x stoppata · &gt; accento · P pollice · i/m indice/medio</div>` : ""}
+        <h3>Riferimento</h3><div>${esc(e.bpm)} bpm</div></div></div>`;
+  }
+  if (s.type === "scale") {
+    return `<p class="scopo">Studia la scala sulla tastiera qui sotto, una posizione alla volta, dicendo ad alta voce intervallo o nome.</p>${ctx}
+      <div class="cols"><div><h3>Metodo</h3><ol>
+        <li><b>Trova tutte le toniche</b> (pallini rossi).</li>
+        <li><b>Una posizione:</b> dalla tonica sulla corda Mi o La, 4–5 tasti, salendo e scendendo. Una nota per click, poi due.</li>
+        <li><b>Su una corda sola:</b> lungo la corda La, per sentire toni e semitoni.</li>
+        <li><b>Per terze:</b> 1-3, 2-4, 3-5… su e giù.</li>
+        <li><b>Spostati</b> alla posizione successiva fino al 12° tasto.</li></ol></div>
+      <div><h3>Consigli</h3><ul>
+        <li>Usa l'<b>accelerazione automatica</b>: +5 bpm ogni 8 battute.</li>
+        <li>Alterna la vista <b>Intervalli / Note</b> della tastiera per memorizzare entrambi.</li>
+        ${s.refs.length > 1 ? `<li>Questa lezione ha ${s.refs.length} scale: dividi il tempo e passa dall'una all'altra con i chip della tastiera.</li>` : ""}
+        ${s.refs.length === 0 ? `<li>Scegli la scala che ti è riuscita peggio nelle settimane precedenti.</li>` : ""}</ul></div></div>`;
+  }
+  if (s.type === "song") {
+    return `${s.fb ? tuningBadge(s.fb.tuning) : ""}${s.songs.map(t => { const so = SONGS.find(x => x.title === t) || {title: t, artist: "", focus: ""};
+      return `<div class="songcard"><div class="ic">${ic("music")}</div><div><div style="font-size:17px;font-weight:500">${esc(so.title)}</div><div class="muted small">${esc(so.artist)} · ${esc(so.focus)}</div></div></div>`; }).join("")}${ctx}
+      <div class="cols"><div><h3>Metodo</h3><ol>
+        <li><b>Ascolta</b> 3 volte seguendo solo la chitarra e canta il riff.</li>
+        <li><b>Trova la tonica</b> e la prima nota.</li>
+        <li><b>Una sezione alla volta</b>, a orecchio, rallentando l'audio.</li>
+        <li><b>Verifica</b> con una tablatura solo alla fine.</li>
+        <li>Sul disco al <b>70%</b> → <b>85%</b> → <b>100%</b>.</li></ol></div>
+      <div><h3>Metronomo</h3><ul><li>Trova il tempo del brano con <b>Tap</b> (scheda Audio).</li><li>Studia le parti difficili più lente, poi sali con l'accelerazione automatica.</li><li><b>Registrati</b> sopra il disco: sei insieme alla cassa?</li></ul></div></div>`;
+  }
+  if (s.type === "free") return `<p class="scopo">Metronomo e tastiera liberi: scegli tempo, suddivisione e scala.</p>
+      <div class="cols"><div><h3>Idee</h3><ul><li>Una scala in tutte le posizioni con l'accelerazione automatica.</li><li>Gap click 2+2 su una linea che conosci.</li><li>Ciclo suddivisioni su una sola nota (R3).</li><li>Trova il tempo di un brano con Tap e suonaci sopra.</li></ul></div>
+      <div><h3>Timer</h3><div class="optrow">Durata <input type="number" id="freeMin" value="10" min="1" max="120"> minuti</div></div></div>`;
+  return `<p class="scopo">${linkIds(s.block.text)}</p>${s.fb ? tuningBadge(s.fb.tuning) : ""}${ctx}<p class="muted">Usa liberamente metronomo e tastiera per questo blocco.</p>`;
+}
+
+// ================= metronomo (markup) =================
+function metroHTML(s, def, rec) {
+  const tab0 = def.gap ? "gap" : def.cycle ? "cyc" : (s.type === "ex" || s.type === "generic") ? "3x3" : "acc";
+  return `<section class="metro ${prefs.metroOpen ? "" : "collapsed"}" id="metro">
+    <div class="m-wide">
+    <div class="stack">
+      <div class="m-head"><span class="lbl">Metronomo</span>
+        <div class="beatsrow"><div class="beats" id="beats"></div><div class="subs" id="subs"></div></div>
+        <span style="display:flex;align-items:center;gap:6px">${rec ? `<span class="rec">rec <b>${rec.best}</b></span>` : ""}<button class="btn sm text m-toggle" id="mToggle">${ic(prefs.metroOpen ? "up" : "down")}Opzioni</button></span></div>
+      <div class="m-ctl">
+        <div class="bpmrow">
+          <button class="btn icon sm tonal" data-b="-5" aria-label="-5">−5</button><button class="btn icon sm" data-b="-1" aria-label="-1">−1</button>
+          <div class="bpmbox"><div class="bpmval" id="bpmVal">${metro.bpm}</div><div class="bpmlbl">BPM</div></div>
+          <button class="btn icon sm" data-b="1" aria-label="+1">+1</button><button class="btn icon sm tonal" data-b="5" aria-label="+5">+5</button>
+        </div>
+        <button class="fab" id="mStart">${ic("play")} Start</button>
+      </div>
+      <input type="range" id="bpmRange" min="30" max="260" value="${metro.bpm}" aria-label="bpm">
+      <div class="status" id="mstatus"></div>
+    </div>
+    <div class="stack m-more" style="gap:8px">
+      <div class="chips scroll" id="subSeg">${[["1","♩ Quarti"],["2","♪ Ottavi"],["3","Terzine"],["4","Sedicesimi"],["sh","Shuffle"],["6","Sestine"]].map(([v, t]) => `<button class="chip" data-sub="${v}">${t}</button>`).join("")}</div>
+      <div class="chips scroll" id="patSeg"><button class="chip" data-pat="all">Tutti i movimenti</button><button class="chip" data-pat="24">Solo 2 e 4</button><button class="chip" data-pat="1">Solo sull'1</button></div>
+      <div class="tabs" id="mtabs">
+        ${[["3x3","3 su 3"],["acc","Accelera"],["gap","Gap"],["cyc","Ciclo"],["aud","Audio"]].map(([k, t]) => `<button data-tab="${k}" class="${k === tab0 ? "on" : ""}">${t}<span class="dot" hidden></span></button>`).join("")}
+      </div>
+      <div class="tabpanel" data-p="3x3" ${tab0 === "3x3" ? "" : "hidden"}>
+        <div class="optrow"><div class="dots3" id="dots"><i></i><i></i><i></i></div>
+          <button class="btn sm" id="okBtn" style="border-color:var(--ok);color:var(--ok)">${ic("check")} Pulita</button>
+          <button class="btn sm" id="koBtn">${ic("close")} Errore</button></div>
+        <div class="small muted">3 esecuzioni pulite di fila = +5 bpm.</div>
+        ${s.type === "ex" ? `<div class="optrow"><button class="btn sm tonal" id="saveBpm">${ic("save")} Salva bpm pulito</button><span class="small muted" id="saveInfo">${rec ? `ultimo ${rec.last} · ${rec.date}` : ""}</span></div>` : ""}
+      </div>
+      <div class="tabpanel" data-p="acc" ${tab0 === "acc" ? "" : "hidden"}>
+        <label class="switch"><input type="checkbox" id="trOn"> Accelerazione automatica</label>
+        <div class="optrow">+<input type="number" id="trInc" min="1" max="20" value="5">bpm ogni<input type="number" id="trEvery" min="1" max="64" value="4">batt. fino a<input type="number" id="trMax" min="40" max="260" value="${metro.trainer.max}"></div>
+      </div>
+      <div class="tabpanel" data-p="gap" ${tab0 === "gap" ? "" : "hidden"}>
+        <label class="switch"><input type="checkbox" id="gapOn"> Gap click</label>
+        <div class="optrow">Suona<input type="number" id="gapPlay" min="1" max="16" value="2">battute, silenzio<input type="number" id="gapMute" min="1" max="16" value="2"></div>
+      </div>
+      <div class="tabpanel" data-p="cyc" ${tab0 === "cyc" ? "" : "hidden"}>
+        <label class="switch"><input type="checkbox" id="cycOn"> Ciclo suddivisioni</label>
+        <div class="optrow">Quarti → ottavi → terzine → sedicesimi → … ogni<input type="number" id="cycEvery" min="1" max="32" value="4">battute</div>
+      </div>
+      <div class="tabpanel" data-p="aud" ${tab0 === "aud" ? "" : "hidden"}>
+        <div class="optrow"><button class="btn sm tonal" id="tap">Tap tempo</button><select id="beatsSel" aria-label="Movimenti">${[2,3,4,5,6,7].map(b => `<option value="${b}" ${b === 4 ? "selected" : ""}>${b}/4</option>`).join("")}</select>
+          <label class="switch"><input type="checkbox" id="accChk" checked> Accento 1</label></div>
+        <div class="optrow" style="flex-wrap:nowrap">Vol.<input type="range" id="vol" min="0" max="1" step="0.05" value="${metro.vol}"> Sudd.<input type="range" id="subVol" min="0" max="1" step="0.05" value="${metro.subVol}"></div>
+        <div class="optrow"><label class="switch"><input type="checkbox" id="pAuto" ${prefs.autoTimer ? "checked" : ""}> Timer con Start</label>${route.view === "step" ? `<label class="switch"><input type="checkbox" id="pNext" ${prefs.autoNext ? "checked" : ""}> Avanza a fine tempo</label>` : ""}</div>
+      </div>
+    </div></div>
+  </section>`;
+}
+
+// ================= PAGINA ESERCIZIO =================
+function renderStep() {
+  const L = LESSONS[route.n - 1]; if (!L) return go("#/");
+  store.set("last", L.n);
+  steps = buildSteps(L, D); stepIdx = Math.min(route.s, steps.length - 1);
+  const s = steps[stepIdx], [code, cat] = stepCode(s);
+  const elapsed = steps.slice(0, stepIdx).reduce((a, x) => a + x.sec, 0);
+  fbState = defaultFb(s);
+  const startBpm = parseBpm(s), def = s.type === "ex" ? (EXDEF[s.id] || {}) : {sub: s.type === "scale" ? 1 : 2};
+  Object.assign(metro, {bpm: startBpm, sub: def.sub || 2, pattern: def.pattern || "all", beats: 4, accent: true});
+  metro.gap.on = !!def.gap; metro.cycle.on = !!def.cycle;
+  metro.trainer = {on: false, inc: 5, every: s.type === "scale" ? 8 : 4, max: goalBpm(s, startBpm)};
+  const rec = s.type === "ex" ? store.get("records", {})[s.id] : null;
+  const prevH = stepIdx > 0 ? `#/l/${L.n}/s/${stepIdx - 1}` : null;
+  const nextH = stepIdx < steps.length - 1 ? `#/l/${L.n}/s/${stepIdx + 1}` : null;
+  $("#app").innerHTML = `<div class="shell">
+    <header class="sbar">
+      <a class="btn icon text" href="#/l/${L.n}" aria-label="Panoramica lezione">${ic("back")}</a>
+      <div class="ttl"><span class="l1">Lezione ${L.n} · ${L.day} · ${esc(s.block.name)} · ${stepIdx + 1}/${steps.length}</span><span class="l2">${esc(stepTitle(s))}</span></div>
+      <div class="timerchip" id="timerBox">${ic("timer")}<span class="clock" id="clock">${fmt(s.sec)}</span><span class="tb"><i id="tbar"></i></span>
+        <button class="btn icon sm text" id="tPlay" aria-label="Avvia timer">${ic("play")}</button><button class="btn icon sm text hide-xs" id="tReset" aria-label="Azzera timer">${ic("replay")}</button></div>
+      <button class="btn icon text hide-xs" id="listBtn" aria-label="Elenco pagine">${ic("list")}</button>
+      <a class="btn icon tonal" ${prevH ? `href="${prevH}"` : "disabled"} aria-label="Pagina precedente">${ic("prev")}</a>
+      ${nextH ? `<a class="btn icon filled" href="${nextH}" aria-label="Pagina successiva" title="${esc(stepTitle(steps[stepIdx + 1]))}">${ic("next")}</a>`
+        : `<button class="btn filled" id="finish">${ic("check")}<span class="hide-xs">Fine</span></button>`}
+      <div class="progress"><i style="width:${(elapsed / (D * 60)) * 100}%"></i></div>
+    </header>
+    <main class="content"><div class="head"><span class="tag c-${cat}">${code}</span><h1 style="font-size:24px">${esc(stepTitle(s))}</h1></div>${exBody(s)}</main>
+    ${metroHTML(s, def, rec)}
+    <section class="fb ${fbState.open ? "" : "closed"}" id="fbCard"></section>
+  </div>`;
+  wireMetro(); setupTimer(s.sec); renderFb(); setupMobile();
+  $("#listBtn").onclick = openSheet;
+  const fin = $("#finish");
+  if (fin) fin.onclick = () => { const d = store.get("done", {}); d[L.n] = new Date().toLocaleDateString("it-IT"); store.set("done", d);
+    toast("Lezione " + L.n + " completata! 🎉"); setTimeout(() => go(L.n < 24 ? "#/l/" + (L.n + 1) : "#/"), 900); };
+}
+function openSheet() {
+  const L = LESSONS[route.n - 1];
+  $("#sheet").innerHTML = `<div class="grab"></div><h2 style="padding:0 12px 8px">Lezione ${L.n} · pagine</h2>` + steps.map((x, i) => { const [c, ct] = stepCode(x);
+    return `<a href="#/l/${L.n}/s/${i}" class="${i === stepIdx ? "cur" : ""}"><span class="tag c-${ct}">${c}</span>${esc(stepTitle(x))}<span class="tm">${fmt(x.sec)}</span></a>`; }).join("");
+  $("#sheet").classList.add("show"); $("#sheetBg").classList.add("show");
+}
+function closeSheet() { $("#sheet").classList.remove("show"); $("#sheetBg").classList.remove("show"); }
+$("#sheetBg").onclick = closeSheet;
+
+function renderFree() {
+  const s = {type: "free", block: {name: "Pratica libera", text: "", target: "—"}, sec: 600, bmin: 10};
+  steps = [s]; stepIdx = 0; fbState = {mode: "scale", k: "pentamin", pc: 9, open: true, tuning: "std"};
+  Object.assign(metro, {bpm: 80, sub: 2, pattern: "all", beats: 4, accent: true}); metro.gap.on = false; metro.cycle.on = false;
+  metro.trainer = {on: false, inc: 5, every: 4, max: 120};
+  $("#app").innerHTML = `<div class="shell">
+    <header class="sbar"><a class="btn icon text" href="#/" aria-label="Home">${ic("back")}</a>
+      <div class="ttl"><span class="l1">Studio Chitarra</span><span class="l2">Pratica libera</span></div>
+      <div class="timerchip" id="timerBox">${ic("timer")}<span class="clock" id="clock">10:00</span><span class="tb"><i id="tbar"></i></span>
+        <button class="btn icon sm text" id="tPlay" aria-label="Avvia timer">${ic("play")}</button><button class="btn icon sm text hide-xs" id="tReset" aria-label="Azzera">${ic("replay")}</button></div></header>
+    <main class="content"><div class="head"><span class="tag c-GE">LIBERO</span><h1 style="font-size:24px">Pratica libera</h1></div>${exBody(s)}</main>
+    ${metroHTML(s, {}, null)}
+    <section class="fb" id="fbCard"></section></div>`;
+  wireMetro(); setupTimer(600); renderFb(); setupMobile();
+  $("#freeMin").onchange = e => setupTimer(Math.max(1, +e.target.value) * 60);
+}
+
+// ================= collegamento metronomo =================
+let rafId = null, cleanCount = 0, taps = [];
+function wireMetro() {
+  cleanCount = 0;
+  const bpmVal = $("#bpmVal"), range = $("#bpmRange");
+  const setBpm = (v, flash) => { metro.bpm = Math.max(30, Math.min(260, Math.round(v))); bpmVal.textContent = metro.bpm; range.value = metro.bpm; const _mb = $("#mBpm"); if (_mb) _mb.textContent = metro.bpm;
+    if (flash) { bpmVal.style.color = "var(--ok)"; setTimeout(() => bpmVal.style.color = "", 500); } };
+  metro.onBpm = f => setBpm(metro.bpm, f);
+  metro.onSub = () => { segSync(); buildBeats(); };
+  metro.onBar = () => updStatus();
+  $$("[data-b]").forEach(b => b.onclick = () => setBpm(metro.bpm + +b.dataset.b));
+  range.oninput = () => setBpm(+range.value);
+  const segSync = () => {
+    $$("#subSeg .chip").forEach(b => b.classList.toggle("on", b.dataset.sub === String(metro.sub)));
+    $$("#patSeg .chip").forEach(b => b.classList.toggle("on", b.dataset.pat === metro.pattern));
+    $$("#mtabs button").forEach(b => { const k = b.dataset.tab, on = k === "acc" ? metro.trainer.on : k === "gap" ? metro.gap.on : k === "cyc" ? metro.cycle.on : false; b.querySelector(".dot").hidden = !on; });
+  };
+  $$("#subSeg .chip").forEach(b => b.onclick = () => { metro.sub = b.dataset.sub === "sh" ? "sh" : +b.dataset.sub; metro.cycle.on = $("#cycOn").checked = false; segSync(); buildBeats(); updStatus(); });
+  $$("#patSeg .chip").forEach(b => b.onclick = () => { metro.pattern = b.dataset.pat; segSync(); updStatus(); });
+  $$("#mtabs button").forEach(b => b.onclick = () => { $$("#mtabs button").forEach(x => x.classList.toggle("on", x === b)); $$(".tabpanel").forEach(p => p.hidden = p.dataset.p !== b.dataset.tab); });
+  const mt = $("#mToggle"); if (mt) mt.onclick = () => { prefs.metroOpen = !prefs.metroOpen; savePrefs(); $("#metro").classList.toggle("collapsed", !prefs.metroOpen); mt.innerHTML = ic(prefs.metroOpen ? "up" : "down") + " Opzioni"; };
+  $("#beatsSel").onchange = e => { metro.beats = +e.target.value; buildBeats(); };
+  $("#accChk").onchange = e => { metro.accent = e.target.checked; buildBeats(); };
+  const num = (id, cb) => { const el = $(id); if (el) el.onchange = () => { cb(+el.value); updStatus(); }; };
+  const sw = (id, cb) => { const el = $(id); el.onchange = () => { cb(el.checked); segSync(); updStatus(); }; };
+  $("#trOn").checked = metro.trainer.on; sw("#trOn", v => metro.trainer.on = v);
+  num("#trInc", v => metro.trainer.inc = Math.max(1, v)); num("#trEvery", v => metro.trainer.every = Math.max(1, v)); num("#trMax", v => metro.trainer.max = v);
+  $("#trEvery").value = metro.trainer.every;
+  $("#gapOn").checked = metro.gap.on; sw("#gapOn", v => metro.gap.on = v);
+  num("#gapPlay", v => metro.gap.play = Math.max(1, v)); num("#gapMute", v => metro.gap.mute = Math.max(1, v));
+  $("#cycOn").checked = metro.cycle.on; sw("#cycOn", v => metro.cycle.on = v);
+  num("#cycEvery", v => metro.cycle.every = Math.max(1, v));
+  $("#vol").oninput = e => { metro.vol = +e.target.value; store.set("vol", metro.vol); };
+  $("#subVol").oninput = e => { metro.subVol = +e.target.value; store.set("subvol", metro.subVol); };
+  $("#tap").onclick = () => { const now = performance.now(); taps = taps.filter(t => now - t < 2500); taps.push(now);
+    if (taps.length >= 2) setBpm(60000 / ((taps[taps.length - 1] - taps[0]) / (taps.length - 1))); };
+  $("#mStart").onclick = toggleMetro;
+  const dots = () => $$("#dots i").forEach((d, i) => d.classList.toggle("on", i < cleanCount));
+  $("#okBtn").onclick = () => { cleanCount++; if (cleanCount >= 3) { cleanCount = 0; setBpm(metro.bpm + 5, true); toast("3 esecuzioni pulite! +5 bpm → " + metro.bpm); } dots(); };
+  $("#koBtn").onclick = () => { cleanCount = 0; dots(); };
+  const sv = $("#saveBpm");
+  if (sv) sv.onclick = () => { const id = steps[stepIdx].id, r = store.get("records", {}), d = new Date().toLocaleDateString("it-IT");
+    const cur = r[id] || {best: 0}; r[id] = {best: Math.max(cur.best, metro.bpm), last: metro.bpm, date: d}; store.set("records", r);
+    const log = store.get("log", []); log.push({id, bpm: metro.bpm, date: d, lesson: route.n}); store.set("log", log.slice(-500));
+    $("#saveInfo").textContent = `salvato ${metro.bpm}` + (metro.bpm > cur.best && cur.best ? " · record! 🎉" : "");
+    toast("Salvato: " + id + " a " + metro.bpm + " bpm"); };
+  const pA = $("#pAuto"); if (pA) pA.onchange = e => { prefs.autoTimer = e.target.checked; savePrefs(); };
+  const pN = $("#pNext"); if (pN) pN.onchange = e => { prefs.autoNext = e.target.checked; savePrefs(); };
+  segSync(); buildBeats(); updStatus();
+}
+function toggleMetro() {
+  const b = $("#mStart");
+  if (metro.running) { metro.stop(); b.innerHTML = ic("play") + " Start"; b.classList.remove("run"); cancelAnimationFrame(rafId); $$(".beat.lit,.subs i.lit").forEach(e => e.classList.remove("lit", "mute")); }
+  else { metro.start(); b.innerHTML = ic("stop") + " Stop"; b.classList.add("run"); draw(); if (prefs.autoTimer && !timer.running && timer.left > 0) startTimer(); }
+  updStatus();
+}
+function buildBeats() {
+  const be = $("#beats"), su = $("#subs"); if (!be) return;
+  be.innerHTML = Array.from({length: metro.beats}, (_, i) => `<div class="beat ${i === 0 && metro.accent ? "acc" : ""}"></div>`).join("");
+  su.innerHTML = Array.from({length: metro.nsub()}, () => "<i></i>").join("");
+  const _mbe = $("#mbeat"); if (_mbe) _mbe.innerHTML = Array.from({length: metro.beats}, (_, i) => `<i class="${i === 0 && metro.accent ? "a" : ""}"></i>`).join("");
+}
+let lastDrawn = null;
+function draw() {
+  const now = ctx().currentTime; let cur = null;
+  while (metro.queue.length && metro.queue[0].t <= now) cur = metro.queue.shift();
+  if (cur && cur !== lastDrawn) {
+    lastDrawn = cur;
+    if ($$("#subs i").length !== cur.n) buildBeats();
+    if (cur.subi === 0) $$("#beats .beat").forEach((b, i) => { b.classList.toggle("lit", i === cur.beat); b.classList.toggle("mute", i === cur.beat && cur.muted); });
+    $$("#subs i").forEach((e, i) => e.classList.toggle("lit", i === cur.subi));
+    if (cur.subi === 0) $$("#mbeat i").forEach((b, i) => b.classList.toggle("lit", i === cur.beat));
+  }
+  if (metro.running) rafId = requestAnimationFrame(draw);
+}
+function updStatus() {
+  const el = $("#mstatus"); if (!el) return; const p = [];
+  const subN = {1:"quarti",2:"ottavi",3:"terzine",4:"sedicesimi",sh:"shuffle",6:"sestine"}[metro.sub];
+  p.push(subN);
+  if (metro.running) p.push(`batt. <b>${(metro.bar || 0) + 1}</b>`);
+  if (metro.pattern === "24") p.push("click su 2 e 4");
+  if (metro.pattern === "1") p.push("click sull'1");
+  if (metro.gap.on) p.push(metro.running && metro.muted() ? `<b>silenzio: tieni il tempo!</b>` : `gap ${metro.gap.play}+${metro.gap.mute}`);
+  if (metro.trainer.on) p.push(`+${metro.trainer.inc}/${metro.trainer.every} batt. → ${metro.trainer.max}`);
+  if (metro.cycle.on) p.push(`ciclo ogni ${metro.cycle.every}`);
+  el.innerHTML = p.join(" · ");
+}
+
+// ================= timer =================
+function setupTimer(sec) { stopTimer(); timer.total = timer.left = sec; $("#timerBox").classList.remove("over"); updTimer();
+  $("#tPlay").onclick = () => timer.running ? stopTimer() : startTimer();
+  $("#tReset").onclick = () => { stopTimer(); timer.left = timer.total; $("#timerBox").classList.remove("over"); updTimer(); }; }
+function startTimer() { if (timer.left <= 0) return; timer.running = true; timer.end = performance.now() + timer.left * 1000;
+  timer.h = setInterval(() => { timer.left = Math.max(0, (timer.end - performance.now()) / 1000); updTimer();
+    if (timer.left <= 0) { stopTimer(); timeUp(); } }, 250); updTimer(); }
+function stopTimer() { timer.running = false; clearInterval(timer.h); updTimer(); }
+function updTimer() { const c = $("#clock"); if (!c) return; c.textContent = fmt(Math.ceil(timer.left));
+  $("#tPlay").innerHTML = ic(timer.running ? "pause" : "play"); $("#tbar").style.width = (100 * (1 - timer.left / timer.total)) + "%"; }
+function timeUp() {
+  $("#timerBox").classList.add("over"); chime();
+  if (route.view === "step" && stepIdx < steps.length - 1) {
+    toast(prefs.autoNext ? "Tempo! Passo alla prossima pagina…" : "Tempo! Passa alla prossima pagina quando sei pronto →");
+    if (prefs.autoNext) setTimeout(() => go(`#/l/${route.n}/s/${stepIdx + 1}`), 2500);
+  } else toast("Tempo scaduto! 🎉");
+}
+
+// ================= pannello tastiera =================
+function renderFb() {
+  const card = $("#fbCard"); if (!card) return; const f = fbState, s = steps[stepIdx] || {};
+  card.classList.toggle("closed", !f.open && !isMobile()); card.classList.toggle("ctl-open", !!f.ctl);
+  const refs = s.refs && s.refs.length ? s.refs : null;
+  const si = f.mode === "scale" ? scaleInfo(f.k, f.pc) : null;
+  const title = (si ? `${si.nome} di ${si.tonic}` : f.mode === "note" ? PCNAME[f.pc] : f.mode === "nat" ? "Note naturali" : "Tutte le note") + ((f.tuning || "std") !== "std" ? " · " + TUNINGS[f.tuning].n : "");
+  const opts = g => SCALES.filter(x => x.g === g).map(x => `<option value="${x.k}" ${f.mode === "scale" && f.k === x.k ? "selected" : ""}>${x.nome}</option>`).join("");
+  card.innerHTML = `<div class="fb-head">
+      <button class="btn icon sm text" id="fbTog" aria-label="Mostra/nascondi tastiera">${ic(f.open ? "down" : "up")}</button>
+      <div class="t">${ic("guitar")} Tastiera <span>${esc(title)}</span></div>
+      <button class="btn icon sm ${f.ctl ? "tonal" : "text"}" id="fbCtl" aria-label="Impostazioni tastiera" ${f.open ? "" : "hidden"}>${ic("tune")}</button>
+      ${si ? `<div class="notechips">${si.notes.map(n => `<span class="nchip" style="--col:${n.col}">${esc(n.nm)}<small>${esc(n.iv)}</small></span>`).join("")}</div>` : ""}
+        ${refs ? `<div class="chips x refs">${refs.map((r, i) => { const x = scaleInfo(r[0], r[1]), on = f.mode === "scale" && f.k === r[0] && f.pc === r[1]; return `<button class="chip ${on ? "on" : ""}" data-ref="${i}">${esc(x.nome)} ${esc(x.tonic)}</button>`; }).join("")}</div>` : ""}
+      <div class="fb-ctrl">
+        <select id="fbMode" class="x" aria-label="Modalità"><option value="scale" ${f.mode === "scale" ? "selected" : ""}>Scala/arpeggio</option><option value="note" ${f.mode === "note" ? "selected" : ""}>Una nota</option><option value="nat" ${f.mode === "nat" ? "selected" : ""}>Note naturali</option><option value="all" ${f.mode === "all" ? "selected" : ""}>Tutte le note</option></select>
+        ${f.mode === "scale" ? `<select id="fbK" class="x" aria-label="Scala"><optgroup label="Scale">${opts("Scale")}</optgroup><optgroup label="Arpeggi">${opts("Arpeggi")}</optgroup><optgroup label="Altro">${opts("Altro")}</optgroup></select>` : ""}
+        ${f.mode === "scale" || f.mode === "note" ? `<select id="fbPc" class="x" aria-label="Tonica">${PCNAME.map((n, i) => `<option value="${i}" ${f.pc === i ? "selected" : ""}>${n}</option>`).join("")}</select>` : ""}
+        ${f.mode === "scale" ? `<div class="chips x">${[["iv","Intervalli"],["nm","Note"],["both","Entrambi"]].map(([v, t]) => `<button class="chip ${prefs.labels === v ? "on" : ""}" data-lab="${v}">${t}</button>`).join("")}</div>` : ""}
+        <select id="fbTun" class="x" aria-label="Accordatura">${Object.entries(TUNINGS).map(([k, v]) => `<option value="${k}" ${(f.tuning || "std") === k ? "selected" : ""}>${v.n}</option>`).join("")}</select><div class="chips x">${[12,24].map(v => `<button class="chip ${prefs.frets === v ? "on" : ""}" data-fr="${v}">0–${v}</button>`).join("")}</div>
+      </div></div>
+    <div class="fb-body ${isMobile() && prefs.frets <= 12 ? "fit" : ""}">${isMobile() ? fbSVGv(f) : fbSVG(f)}</div>
+    <div class="fb-legend">${f.mode === "scale" ? `<span><i style="background:var(--d-t)"></i>Tonica</span><span><i style="background:var(--d-3)"></i>Terza</span><span><i style="background:var(--d-5)"></i>Quinta</span><span><i style="background:var(--d-7)"></i>Settima</span><span><i style="background:var(--d-o)"></i>Altri gradi</span><span><i style="background:var(--d-b5)"></i>Blue note</span>` : `<span><i style="background:var(--d-t)"></i>Do / nota scelta</span><span><i style="background:var(--d-3)"></i>Naturali</span><span><i style="background:var(--d-alt)"></i>Alterate</span>`}<span>${si ? "Passi: " + si.steps.join(" ") + " · " : ""}corde dalla 6ª alla 1ª: ${esc(TUNINGS[f.tuning || "std"].s.map(x => x[0]).reverse().join(" "))} (in alto la 1ª)</span></div>`;
+  $("#fbTog").onclick = () => { f.open = !f.open; renderFb(); };
+  $("#fbCtl").onclick = () => { f.ctl = !f.ctl; renderFb(); };
+  card.querySelector(".fb-head .t").onclick = () => { f.open = !f.open; renderFb(); };
+  const m = $("#fbMode"); m.onchange = () => { f.mode = m.value; if (!f.k) f.k = "pentamin"; if (f.pc == null) f.pc = 4; renderFb(); };
+  const k = $("#fbK"); if (k) k.onchange = () => { f.k = k.value; renderFb(); };
+  const p = $("#fbPc"); if (p) p.onchange = () => { f.pc = +p.value; renderFb(); };
+  $$("[data-ref]", card).forEach(b => b.onclick = () => { const r = refs[+b.dataset.ref]; Object.assign(f, {mode: "scale", k: r[0], pc: r[1]}); renderFb(); });
+  $$("[data-lab]", card).forEach(b => b.onclick = () => { prefs.labels = b.dataset.lab; savePrefs(); renderFb(); });
+  const tu = $("#fbTun"); if (tu) tu.onchange = () => { f.tuning = tu.value; renderFb(); };
+  $$("[data-fr]", card).forEach(b => b.onclick = () => { prefs.frets = +b.dataset.fr; savePrefs(); renderFb(); });
+}
+
+// ================= scorciatoie =================
+document.addEventListener("keydown", e => {
+  if (["INPUT", "SELECT", "TEXTAREA"].includes(e.target.tagName) || !$("#mStart")) return;
+  if (e.code === "Space") { e.preventDefault(); toggleMetro(); }
+  else if (e.key === "ArrowUp") { e.preventDefault(); metro.bpm = Math.min(260, metro.bpm + 1); metro.onBpm(); }
+  else if (e.key === "ArrowDown") { e.preventDefault(); metro.bpm = Math.max(30, metro.bpm - 1); metro.onBpm(); }
+  else if (route.view === "step" && e.key === "ArrowRight" && stepIdx < steps.length - 1) go(`#/l/${route.n}/s/${stepIdx + 1}`);
+  else if (route.view === "step" && e.key === "ArrowLeft" && stepIdx > 0) go(`#/l/${route.n}/s/${stepIdx - 1}`);
+  else if (e.key === "Escape") closeSheet();
+});
+
+// ================= SMARTPHONE =================
+let mobTab = "ex";
+const mq = matchMedia("(max-width: 600px) and (orientation: portrait)");
+const isMobile = () => document.body.classList.contains("m");
+function applyMQ() {
+  const was = isMobile();
+  document.body.classList.toggle("m", mq.matches);
+  if (was !== mq.matches && $("#fbCard")) renderFb();
+}
+mq.addEventListener ? mq.addEventListener("change", applyMQ) : mq.addListener(applyMQ);
+applyMQ();
+function setupMobile() {
+  const sh = $(".shell"); if (!sh) return;
+  sh.dataset.tab = mobTab;
+  sh.insertAdjacentHTML("beforeend", `
+    <div class="mini" id="mini">
+      <div class="mb" id="mbeat"></div>
+      <button class="btn icon sm tonal" data-mb="-5" aria-label="-5">−5</button>
+      <button class="btn icon sm" data-mb="-1" aria-label="-1">−1</button>
+      <div class="mbpm"><b id="mBpm">${metro.bpm}</b><small>BPM</small></div>
+      <button class="btn icon sm" data-mb="1" aria-label="+1">+1</button>
+      <button class="btn icon sm tonal" data-mb="5" aria-label="+5">+5</button>
+      <button class="mplay" id="mPlay" aria-label="Start/Stop">${ic("play")}</button>
+    </div>
+    <nav class="bnav" id="bnav">
+      <button data-t="ex"><span class="pill">${ic("list")}</span>Esercizio</button>
+      <button data-t="metro"><span class="pill">${ic("timer")}</span>Metronomo</button>
+      <button data-t="fb"><span class="pill">${ic("guitar")}</span>Tastiera</button>
+    </nav>`);
+  $$("[data-mb]").forEach(b => b.onclick = () => { metro.bpm = Math.max(30, Math.min(260, metro.bpm + +b.dataset.mb)); metro.onBpm(); });
+  $("#mPlay").onclick = () => toggleMetro();
+  const setTab = k => { mobTab = k; sh.dataset.tab = k; $$("#bnav button").forEach(b => b.classList.toggle("on", b.dataset.t === k));
+    if (k === "fb") renderFb(); const c = $(".content"); if (k === "ex" && c) c.scrollTop = c.scrollTop; };
+  $$("#bnav button").forEach(b => b.onclick = () => setTab(b.dataset.t));
+  setTab(mobTab); buildBeats(); syncMini();
+}
+function syncMini() {
+  const p = $("#mPlay"); if (!p) return;
+  p.innerHTML = ic(metro.running ? "stop" : "play"); p.classList.toggle("run", metro.running);
+  if (!metro.running) $$("#mbeat i.lit").forEach(e => e.classList.remove("lit"));
+}
+const _toggleMetro = toggleMetro;
+toggleMetro = function () { _toggleMetro(); syncMini(); };
+// tastiera verticale (come un diagramma di accordi: capotasto in alto, 6ª corda a sinistra)
+function fbSVGv(cfg) {
+  const strings = TUNINGS[cfg.tuning || "std"].s.slice().reverse();
+  const NF = prefs.frets, cw = 52, rh = NF > 12 ? 34 : 44, lm = 26, top = 62, r = 15;
+  const W = lm + strings.length * cw + 6, Hh = top + NF * rh + 10, map = fbCells(cfg);
+  const x0 = lm, x1 = lm + strings.length * cw;
+  let s = `<svg viewBox="0 0 ${W} ${Hh}" preserveAspectRatio="xMidYMin meet" style="max-width:520px;margin:0 auto;display:block">`;
+  s += `<rect x="${x0}" y="${top}" width="${x1 - x0}" height="${NF * rh}" fill="var(--wood)" rx="3"/>`;
+  const midx = (x0 + x1) / 2;
+  [3,5,7,9,15,17,19,21].filter(f => f <= NF).forEach(f => s += `<circle cx="${midx}" cy="${top + (f - .5) * rh}" r="5" fill="var(--fret)"/>`);
+  [12,24].filter(f => f <= NF).forEach(f => { s += `<circle cx="${x0 + (x1 - x0) * .3}" cy="${top + (f - .5) * rh}" r="5" fill="var(--fret)"/><circle cx="${x0 + (x1 - x0) * .7}" cy="${top + (f - .5) * rh}" r="5" fill="var(--fret)"/>`; });
+  for (let f = 1; f <= NF; f++) s += `<line x1="${x0}" y1="${top + f * rh}" x2="${x1}" y2="${top + f * rh}" stroke="var(--fret)" stroke-width="2"/>`;
+  s += `<rect x="${x0 - 1}" y="${top - 3}" width="${x1 - x0 + 2}" height="6" fill="var(--nut)" rx="1"/>`;
+  for (let f = 1; f <= NF; f++) s += `<text x="${lm - 8}" y="${top + (f - .5) * rh + 4}" text-anchor="end" font-size="11" fill="var(--on3)">${f}</text>`;
+  strings.forEach(([nm, op], i) => {
+    const x = x0 + (i + .5) * cw;
+    s += `<text x="${x}" y="13" text-anchor="middle" font-size="12" font-weight="600" fill="var(--on2)">${nm}</text>`;
+    s += `<line x1="${x}" y1="${top}" x2="${x}" y2="${top + NF * rh}" stroke="var(--string)" stroke-width="${3.2 - i * .45}"/>`;
+    for (let f = 0; f <= NF; f++) {
+      const pc = (op + f) % 12, c = map[pc]; if (!c) continue;
+      const cy = f === 0 ? 38 : top + (f - .5) * rh, tc = c.light ? "#e4e2e9" : "#15161b";
+      s += `<circle cx="${x}" cy="${cy}" r="${r}" fill="${c.col}"/>`;
+      if (cfg.mode === "scale" && prefs.labels === "both") {
+        s += `<text x="${x}" y="${cy - 1}" text-anchor="middle" font-size="9" font-weight="700" fill="${tc}">${esc(c.iv)}</text><text x="${x}" y="${cy + 9}" text-anchor="middle" font-size="8" font-weight="600" fill="${tc}">${esc(c.nm)}</text>`;
+      } else {
+        const lab = cfg.mode === "scale" && prefs.labels === "iv" ? c.iv : c.nm, fs = lab.length <= 2 ? 12 : lab.length <= 3 ? 10.5 : 9;
+        s += `<text x="${x}" y="${cy + fs * .36}" text-anchor="middle" font-size="${fs}" font-weight="700" fill="${tc}">${esc(lab)}</text>`;
+      }
+    }
+  });
+  return s + "</svg>";
+}
+// installazione
+let deferredPrompt = null;
+window.addEventListener("beforeinstallprompt", e => { e.preventDefault(); deferredPrompt = e; if (route.view === "home") renderHome(); });
+const standalone = () => matchMedia("(display-mode: standalone)").matches || navigator.standalone;
+const isIOS = /iphone|ipad|ipod/i.test(navigator.userAgent);
+const _renderHome = renderHome;
+renderHome = function () {
+  _renderHome();
+  if (standalone() || store.get("hideInstall", false)) return;
+  let html = "";
+  if (deferredPrompt) html = `<div class="installbar">${ic("guitar")}<span><b>Installa l'app</b> sulla schermata Home</span><button class="btn" id="instBtn">Installa</button><button class="btn icon sm text" id="instX" style="background:none;color:inherit;margin-left:0">${ic("close")}</button></div>`;
+  else if (isIOS) html = `<div class="installbar">${ic("guitar")}<span><b>Per installare:</b> tocca Condividi e poi “Aggiungi alla schermata Home”</span><button class="btn icon sm text" id="instX" style="background:none;color:inherit">${ic("close")}</button></div>`;
+  if (!html) return;
+  $(".page").insertAdjacentHTML("afterbegin", html);
+  const ib = $("#instBtn"); if (ib) ib.onclick = async () => { deferredPrompt.prompt(); await deferredPrompt.userChoice; deferredPrompt = null; renderHome(); };
+  $("#instX").onclick = () => { store.set("hideInstall", true); renderHome(); };
+};
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+}
+
+render();
+</script>
+</body>
+</html>
